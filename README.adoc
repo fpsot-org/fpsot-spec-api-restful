@@ -1,30 +1,21 @@
-= FPSOT specification template
+= FPSOT RESTful API specification
 
-This repository is the starting point for an FPSOT specification.
-Create a new repository from it, then replace this text.
-
-== Start a specification
-
-. Set `SPEC_PREFIX` in `.github/workflows/ci.yml` to the three-letter prefix of the requirement IDs.
-. Replace the titles in `spec/`, `docs/antora.yml`, `publiccode.yml`, `AGENTS.md`, `NOTICE` and `skill/SKILL.md`.
-. Replace the example requirement TPL-001 and the example row in `jurisdictions/baseline.yaml`.
-. List each spec page in `spec/<lang>/book.adoc`. The glossary stays the last include.
-
-Each page ends with a document history.
-Each guide page sets `:page-type:` to tutorial, how-to, reference or explanation.
-Write abbreviations and defined terms as `{abbr-…}` and `{term-…}` from the term base of `fpsot-spec-writing`.
-The continuous integration writes `_fpsot-terms.adoc`, the glossaries and the comparison pages. Git ignores them.
+The common rules for every HTTP API that an FPSOT specification defines: methods and status codes, resources, OpenAPI descriptions, errors, pages, versions, retries, languages, security and events.
+Domain specifications, such as the registry engine, build on it.
+Version 0.1 is a draft.
 
 == Implement this spec
 
 Read the normative text in `spec/en/` or `spec/fr/`.
-Each requirement has an ID, such as `XYZ-001`.
-Check your implementation against every requirement.
+Each requirement has an ID from `API-001` to `API-104`.
+Check your server, your OpenAPI description and your clients against every requirement.
+The rules on names and value formats come from the FPSOT naming and data types specifications.
 
 == Adopt this spec
 
-Read the guides in `docs/modules/en/pages/` or `docs/modules/fr/pages/`.
-They explain what the spec gives your organisation and how to require it.
+Read the guide in `docs/modules/en/pages/index.adoc` or `docs/modules/fr/pages/index.adoc`.
+To require it in a call for tenders, ask that every API conform to this specification, version 0.1.
+The comparison data in `jurisdictions/` shows how the rules compare with those of the Government of Canada and of Québec.
 
 == Layout
 
@@ -42,10 +33,10 @@ They explain what the spec gives your organisation and how to require it.
 | The agent skill: a short summary that cites requirement IDs.
 
 | `rules/`
-| Machine-checkable rules.
+| Machine-checkable rules. None yet.
 
 | `diagrams/`
-| PlantUML sources and their rendered SVG files.
+| PlantUML sources and their rendered SVG files. None yet.
 
 | `jurisdictions/`
 | Comparison data per jurisdiction. `baseline.yaml` lists the compared requirements.

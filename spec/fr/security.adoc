@@ -1,0 +1,124 @@
+= Sécurité
+include::_fpsot-terms.adoc[]
+
+Les serveurs d’{abbr-api-first} publics détiennent des données personnelles et officielles, et des personnes malveillantes les sondent chaque jour.
+Ces règles fixent la protection minimale de toute {abbr-api}.
+La liste {abbr-owasp-first} {abbr-api} Security Top 10 de 2023 énumère les risques qu’elles visent.
+
+== Transport
+
+[[API-080]]
+*API-080.* Une {abbr-api} DOIT servir du contenu et accepter des requêtes uniquement en {abbr-https-first}, avec {abbr-tls-first} 1.2 ou 1.3.
+Elle NE DOIT PAS servir de contenu ni accepter de requête en {abbr-http-first} simple.
+Un serveur DEVRAIT offrir {abbr-tls} 1.3 et DOIT suivre le {abbr-rfc-first} 9325 et les documents qui le mettent à jour.
+En {abbr-http} simple, n’importe qui sur le réseau peut lire ou modifier l’échange.
+
+Un serveur NE DEVRAIT PAS répondre du tout en {abbr-http} simple.
+Certaines règles obligatoires exigent une redirection, comme les exigences fédérales de configuration des sites Web au Canada.
+Quand une telle règle s’applique, le serveur PEUT répondre par une redirection permanente vers l’adresse {abbr-https}.
+Cette redirection DOIT employer le code `301` ou `308`, et NE DOIT PAS porter de contenu.
+Une redirection arrive trop tard pour protéger la première requête, car le client l’a déjà envoyée en clair.
+Un client qui ne reçoit aucune réponse apprend tout de suite à employer la bonne adresse.
+
+[[API-081]]
+*API-081.* Toute réponse DOIT porter un en-tête `Strict-Transport-Security` avec un `max-age` d’au moins 31536000 secondes, soit un an, et `includeSubDomains`.
+Avec {abbr-hsts-first}, les navigateurs refusent toute connexion simple ultérieure vers l’hôte.
+Sur un réseau public, personne ne peut alors retirer le chiffrement pour lire ou modifier les échanges.
+
+== En-têtes de réponse
+
+[[API-082]]
+*API-082.* Toute réponse DOIT porter `X-Content-Type-Options: nosniff`.
+Une réponse qui contient des données non publiques DOIT porter `Cache-Control: no-store`.
+Toute autre réponse DEVRAIT porter un en-tête `Cache-Control` explicite.
+Un navigateur n’exécute alors jamais une réponse {abbr-json-first} comme un script.
+Un cache partagé ne garde jamais une copie de données personnelles pour la personne suivante.
+
+[[API-083]]
+*API-083.* Un serveur NE DOIT PAS envoyer d’en-têtes qui nomment son logiciel ou sa version, comme `Server: product/1.2.3` ou `X-Powered-By`.
+Une personne malveillante se sert d’un numéro de version pour choisir une faille connue.
+
+== Requêtes d’une autre origine
+
+[[API-084]]
+*API-084.* Un serveur NE DOIT PAS envoyer d’en-têtes {abbr-cors-first}, sauf pour une application de navigateur d’une autre origine.
+Dans ce cas, il DOIT autoriser uniquement les origines d’une liste fixe.
+Il NE DOIT PAS recopier l’`Origin` de la requête dans sa réponse.
+Il NE DOIT PAS combiner `+Access-Control-Allow-Origin: *+` avec des authentifiants.
+Une {abbr-api} de données ouvertes sans authentifiants PEUT autoriser toutes les origines avec `+*+`.
+Avec une règle trop souple, toute page Web peut lire les données d’une personne au moyen de sa session.
+
+== Données dans les requêtes
+
+[[API-085]]
+*API-085.* Un chemin ou une chaîne de requête NE DOIT PAS contenir de secret, de jeton ni de renseignement personnel.
+Les serveurs, les mandataires et les navigateurs écrivent les adresses complètes dans des journaux et des historiques.
+Beaucoup de personnes peuvent les y lire.
+Envoyez plutôt ces valeurs dans un en-tête ou dans le corps.
+
+[[API-086]]
+*API-086.* Un serveur DOIT vérifier chaque requête selon les schémas de la description.
+Il DOIT refuser ce qui ne correspond pas.
+Il DOIT fixer une taille de corps maximale et répondre `413 Content Too Large` au-delà.
+Il DOIT ignorer ou refuser les champs qu’un client n’a pas le droit de fixer, comme `id` ou `createdAt`.
+Des personnes malveillantes font enregistrer par un serveur trop confiant des données qu’il devrait refuser.
+Les champs qu’un client fixe sans en avoir le droit forment la faille d’affectation de masse.
+
+== Contrôle d’accès
+
+[[API-090]]
+*API-090.* Une {abbr-api} qui doit savoir qui l’appelle DOIT accepter les jetons porteurs OAuth 2.0.
+Elle DOIT suivre le {abbr-rfc} 9700, la meilleure pratique de sécurité d’OAuth 2.0.
+Elle DEVRAIT employer OpenID Connect quand elle doit connaître la personne derrière le client.
+Elle DOIT vérifier l’émetteur, l’audience, l’expiration et la signature de chaque jeton.
+Cette spécification ne définit pas comment se connecter ni comment émettre des jetons.
+OAuth 2.0 et OpenID Connect sont les normes communes des services publics d’identité.
+
+[[API-091]]
+*API-091.* Un serveur NE DOIT PAS accepter de secret dans un paramètre de requête.
+Cela vaut pour les mots de passe, les jetons et les clés d’{abbr-api}.
+Un serveur NE DOIT PAS donner accès à des données non publiques sur la seule foi d’une clé d’{abbr-api}.
+Une clé dans une adresse fuit dans les journaux.
+Une clé sans personne derrière elle ne peut pas prouver qui a agi.
+
+[[API-092]]
+*API-092.* Un serveur DOIT vérifier, à chaque requête, que l’appelant a le droit d’agir sur l’élément que nomme la requête.
+Il DOIT aussi vérifier que l’appelant a le droit de lire ou de modifier chaque champ de l’élément.
+Vérifier seulement qu’une personne s’est connectée est la faille d’{abbr-api} la plus courante.
+N’importe qui pourrait alors lire le dossier d’une autre personne en changeant un identifiant dans le chemin.
+
+[[API-093]]
+*API-093.* Un serveur DEVRAIT répondre `404 Not Found` plutôt que `403 Forbidden` quand l’appelant n’a pas le droit de savoir que l’élément existe.
+Un `403` confirmerait que l’élément existe, ce qui peut en soi être un renseignement personnel.
+
+== Limites de débit
+
+[[API-094]]
+*API-094.* Une {abbr-api} DOIT limiter le nombre de requêtes que chaque client peut envoyer pendant une période.
+Au-delà de la limite, elle DOIT répondre `429 Too Many Requests` avec un en-tête `Retry-After`.
+La description DOIT indiquer les limites.
+Une limite protège le service d’un client défectueux et d’un déluge de requêtes.
+Elle garde aussi sous contrôle le coût d’un service public.
+
+[[API-095]]
+*API-095.* Un serveur DEVRAIT indiquer au client son quota avec les en-têtes `RateLimit-Policy` et `RateLimit`.
+Ces en-têtes viennent de la dernière version du projet Internet draft-ietf-httpapi-ratelimit-headers.
+Chaque version d’un projet expire après six mois, et la version suivante peut changer les en-têtes.
+La règle reste une recommandation jusqu’à ce que le projet devienne un {abbr-rfc}.
+Le client ralentit alors avant d’atteindre la limite.
+
+== Inventaire
+
+[[API-096]]
+*API-096.* Une organisation qui exploite une {abbr-api} DOIT tenir la liste de chaque hôte et de chaque version qu’elle expose.
+La liste DOIT donner la description de chacun.
+Elle DOIT retirer une version après sa date de retrait.
+Une ancienne version oubliée garde ouvertes de vieilles failles longtemps après que la nouvelle version les a corrigées.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

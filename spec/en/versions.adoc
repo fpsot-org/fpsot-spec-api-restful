@@ -1,0 +1,68 @@
+= Versions
+include::_fpsot-terms.adoc[]
+
+An {abbr-api-first} changes over time, but its clients cannot all change at the same time.
+These rules let an {abbr-api} grow without breaking the clients that depend on it.
+
+== Major versions
+
+[[API-050]]
+*API-050.* The path MUST start with the major version, such as `/v1/`.
+The path MUST NOT hold a minor or a patch version.
+An {abbr-api} MUST NOT select a version through a header, a query parameter or a media type.
+A version in the path is visible in every log, link and bookmark.
+It also lets a gateway send each version to its own server.
+
+[[API-051]]
+*API-051.* A change within a major version MUST NOT break a client that follows these rules.
+These changes break a client, and need a new major version.
+
+* Removing or renaming an operation, a field, a parameter or an enumeration value.
+* Changing the type, the format or the meaning of a field.
+* Making an optional input required, or adding a required input.
+* Accepting fewer values than before.
+* Changing a default, a status code or a problem type.
+
+A public service cannot know all its clients, so it cannot ask them all to change at once.
+
+[[API-052]]
+*API-052.* A client MUST ignore a field or a header that it does not know.
+A client SHOULD handle an enumeration value that it does not know, for example as "other".
+A server can then add a field or a value within a major version.
+Clients that follow this rule keep working after each addition.
+
+[[API-053]]
+*API-053.* The `info.version` field of the description MUST give the version of the description, in Semantic Versioning 2.0.0.
+Its major number MUST match the major version in the path.
+Clients and buyers can then see which changes each release made.
+
+== Deprecation and sunset
+
+[[API-054]]
+*API-054.* A deprecated operation or version MUST send a `Deprecation` header on every response.
+The header follows {abbr-rfc-first} 9745.
+The description MUST mark the operation as `deprecated`.
+The server SHOULD also send a `Link` header with the relation type `deprecation`, to a page that explains the change.
+A client learns of the deprecation from its own traffic, without reading any notice.
+
+[[API-055]]
+*API-055.* Once the server knows the removal date, it MUST send a `Sunset` header of {abbr-rfc} 8594 with it.
+The sunset date MUST be at least 12 months after the first `Deprecation` header.
+The previous major version MUST stay available until that date.
+A sunset MUST remove an operation only in a new major version, as <<API-051,API-051>> requires.
+Public bodies plan and fund their changes a year ahead.
+A shorter notice would force a client to change before it has the budget.
+
+[[API-056]]
+*API-056.* After the sunset date, every request to the removed version MUST get `410 Gone`.
+The problem type is `version-retired`.
+The `detail` member SHOULD point to the version that replaces it.
+A client then gets a clear error rather than a `404 Not Found` that looks like a typing mistake.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

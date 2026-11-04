@@ -1,6 +1,6 @@
 publiccodeYmlVersion: "0.4"
-name: FPSOT specification template
-url: "https://github.com/fpsot-org/fpsot-spec-template"
+name: FPSOT RESTful API specification
+url: "https://github.com/fpsot-org/fpsot-spec-api-restful"
 platforms:
   - web
 categories:
@@ -9,22 +9,30 @@ developmentStatus: concept
 softwareType: "standalone/other"
 description:
   en:
-    shortDescription: Template for FPSOT specification repositories.
+    shortDescription: Common rules for the REST APIs of FPSOT specifications.
     longDescription: >
-      Starting point for an FPSOT specification repository. It holds the
-      layout, the Community Specification License files, and the CI that
-      checks requirement IDs, links, languages and prose.
+      Common rules for every HTTP API that an FPSOT specification defines:
+      HTTP methods and status codes, resource paths, OpenAPI 3.1
+      descriptions, errors as problem details, cursor pagination, filters
+      and sorting, versions and deprecation, idempotent retries, languages,
+      transport security, access control, rate limits and CloudEvents events.
     features:
-      - Specification repository layout
+      - OpenAPI 3.1 descriptions and problem details errors
+      - Cursor pagination, versioning and safe retries
+      - Bilingual content and security baseline
   fr:
-    shortDescription: Gabarit des dépôts de spécification de FPSOT.
+    shortDescription: Règles communes des API REST des spécifications de FPSOT.
     longDescription: >
-      Point de départ d'un dépôt de spécification de FPSOT. Il contient la
-      structure, les fichiers de la Community Specification License, et
-      l'intégration continue qui vérifie les identifiants, les liens, les
-      langues et la rédaction.
+      Règles communes à toute API HTTP que définit une spécification de
+      FPSOT : méthodes et codes d'état HTTP, chemins des ressources,
+      descriptions OpenAPI 3.1, erreurs en détails de problème, pagination
+      par curseur, filtres et tris, versions et retrait, nouvelles tentatives
+      idempotentes, langues, sécurité du transport, contrôle d'accès, limites
+      de débit et événements CloudEvents.
     features:
-      - Structure d'un dépôt de spécification
+      - Descriptions OpenAPI 3.1 et erreurs en détails de problème
+      - Pagination par curseur, gestion des versions et nouvelles tentatives sûres
+      - Contenu bilingue et sécurité de base
 legal:
   license: Community-Spec-1.0
 maintenance:

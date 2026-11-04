@@ -1,0 +1,110 @@
+= Pages, filters and sorting
+include::_fpsot-terms.adoc[]
+
+A collection can hold millions of items.
+A client reads it one page at a time, and asks the server to filter and sort it.
+
+== Pages
+
+[[API-040]]
+*API-040.* A `GET` request on a collection MUST return one page of items, never the whole collection.
+The client MAY ask for a page size with the `pageSize` query parameter.
+The description MUST state the default and the largest page size.
+A `pageSize` above the largest MUST get `400 Bad Request` with the `invalid-parameter` type.
+A server MAY return fewer items than the page size.
+A server that returns everything at once runs out of memory, and so do its clients.
+
+[[API-041]]
+*API-041.* An {abbr-api-first} MUST page a collection with an opaque cursor, not with a page number or an offset.
+The client MUST NOT build, change or parse a cursor.
+A cursor MUST hold or reference the filters and the sort order of the first request.
+An invalid or expired cursor MUST get `400 Bad Request` with the `invalid-cursor` type.
+With an offset, an item that someone adds or removes between two requests shifts every page.
+The client would then skip some items or read some twice.
+
+[[API-042]]
+*API-042.* A page MUST be a {abbr-json-first} object with the items in an `items` member.
+When a next page exists, the page MUST carry its absolute {abbr-url-first} in a `next` member.
+The response SHOULD also carry it in a `Link` header of relation type `next`, as {abbr-rfc-first} 8288 defines.
+The last page MUST NOT have a `next` member.
+The `next` member is part of the schema, so generated clients find it.
+Generic tools follow the `Link` header without knowing the schema.
+
+[[API-043]]
+*API-043.* A page SHOULD NOT include the total number of items, unless the client asks for it.
+A domain specification MAY define a parameter for that request.
+Counting a large collection is slow and the count changes while the client reads.
+
+== Filters
+
+[[API-044]]
+*API-044.* A filter on a field MUST use a query parameter with the name of that field, such as `status=active`.
+A filter on a range MUST add `From` or `To` to the field name, such as `createdAtFrom`.
+The {abbr-fpsot-first} naming specification allows these suffixes, and `From` includes the bound while `To` excludes it.
+A filter on personal information MUST instead follow <<API-049,API-049>>.
+The description MUST list every filter that an operation accepts.
+Clients then build a filter from the schema they already know.
+
+[[API-045]]
+*API-045.* A query parameter that is unknown or has a wrong value MUST get `400 Bad Request`.
+The problem type is `invalid-parameter`.
+A server that ignores a misspelt filter returns the wrong items, and the client never learns why.
+
+[[API-046]]
+*API-046.* A free-text search SHOULD use the `search` query parameter.
+The description MUST say which fields the search reads.
+A search on personal information MUST instead follow <<API-049,API-049>>.
+One parameter name lets a user interface offer the same search box for every collection.
+
+== Sorting
+
+[[API-047]]
+*API-047.* A client MAY ask for an order with the `sortBy` query parameter.
+Its value is a field name, or several field names separated by commas.
+The `sortOrder` query parameter MAY then be `ascending` or `descending`, with `ascending` as the default.
+The description MUST list the fields that each operation can sort by.
+A shared form lets every client sort every collection the same way.
+
+[[API-048]]
+*API-048.* Every collection MUST have a default order that the description states.
+Every order MUST end with the `id` field, so that two items never tie.
+A stable order is the condition for a cursor to work.
+Without it, an item can appear on two pages or on none.
+
+== Searches on personal information
+
+[[API-049]]
+*API-049.* A search or a filter on personal information MUST use `POST` on the `searches` sub-resource of the collection.
+Personal information includes the names, birth dates and identifiers of people.
+The criteria MUST go in a {abbr-json} body, as in `POST /v1/parties/searches`.
+The response MUST be a page in the format of <<API-042,API-042>>, and its cursor MUST NOT hold the criteria.
+Servers and proxies write addresses into logs, but not bodies.
+The criteria then stay out of the logs, as xref:security.adoc#API-085[API-085] requires.
+
+== Example
+
+[source,http]
+----
+GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=descending&pageSize=2 HTTP/1.1
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
+
+{
+  "items": [
+    {"id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23", "status": "active", "updatedAt": "2026-11-02T14:05:00Z"},
+    {"id": "01a19671-c1c0-7f00-8c11-2d3e4f5a6b7c", "status": "active", "updatedAt": "2026-11-01T09:30:00Z"}
+  ],
+  "next": "https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
+}
+----
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

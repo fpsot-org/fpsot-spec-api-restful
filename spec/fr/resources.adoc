@@ -1,0 +1,74 @@
+= Ressources
+include::_fpsot-terms.adoc[]
+
+Une {abbr-api-first} offre des ressources.
+Une collection contient des éléments d’une même sorte, et chaque élément a sa propre adresse.
+
+== Chemins
+
+[[API-010]]
+*API-010.* Une {abbr-api} DOIT désigner une collection par `/v<major>/<collection>` et un élément par `/v<major>/<collection>/{<resource>Id}`.
+Le nom de la collection DOIT être un nom au pluriel.
+La variable de chemin DOIT porter le nom du champ qui renvoie à l’élément.
+Les deux suivent la spécification de nommage de la {abbr-fpsot-first}.
+Un exemple est `/v1/assets/01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23`.
+Un seul modèle permet à un client de deviner une adresse et de la lire d’un coup d’œil.
+
+[[API-011]]
+*API-011.* Le dernier segment du chemin d’un élément DOIT être l’identifiant de l’élément.
+Il prend la forme que fixe la spécification des types de données de la {abbr-fpsot}.
+Il NE DOIT PAS être un numéro de ligne de base de données.
+Il NE DOIT PAS non plus révéler combien d’éléments existent.
+Un numéro séquentiel permet à n’importe qui de compter les éléments et de deviner l’adresse du suivant.
+
+[[API-012]]
+*API-012.* Un chemin NE DEVRAIT PAS descendre de plus d’une collection sous un élément de premier niveau.
+Un niveau est permis, comme dans `/v1/parties/{partyId}/addresses`.
+Un chemin comme `/v1/parties/{partyId}/addresses/{addressId}/notes` est trop profond.
+Les chemins profonds sont longs, répètent de l’information et se brisent quand un élément change de parent.
+
+[[API-013]]
+*API-013.* Un chemin NE DOIT PAS se terminer par une barre oblique ni par une extension de fichier comme `.json`.
+Un serveur DEVRAIT répondre à une requête vers un tel chemin par `308 Permanent Redirect` vers le chemin canonique.
+Chaque ressource a alors une seule adresse, et les caches et les liens restent cohérents.
+
+[[API-014]]
+*API-014.* Une action qui ne correspond à aucune méthode sur une ressource DEVRAIT d’abord devenir une nouvelle ressource.
+Par exemple, `POST /v1/applications/{applicationId}/submissions` enregistre une soumission.
+Quand aucune ressource ne convient, une {abbr-api} PEUT employer `POST` sur `/<collection>/{<resource>Id}/<action>`.
+L’action est alors un verbe, sous la forme de nommage des segments de chemin.
+Une ressource garde une trace de l’action, et les méthodes gardent leur sens habituel.
+
+== Représentations
+
+[[API-015]]
+*API-015.* Le corps d’une requête ou d’une réponse DOIT être un objet {abbr-json-first} au premier niveau.
+Il NE DOIT PAS être un tableau ou une valeur seule.
+Un serveur peut alors ajouter un champ à toute réponse sans briser ses clients.
+
+[[API-016]]
+*API-016.* Les noms de champs et de paramètres de requête DOIVENT suivre la spécification de nommage de la {abbr-fpsot}.
+Les valeurs des champs DOIVENT suivre la spécification des types de données de la {abbr-fpsot}.
+Cela couvre les dates et les heures, les montants, les identifiants et les textes bilingues.
+Chaque {abbr-api} écrit alors une même valeur de la même façon, et une seule bibliothèque cliente les lit toutes.
+
+[[API-017]]
+*API-017.* Toute représentation d’un élément DOIT inclure son `id`.
+Elle DEVRAIT inclure `createdAt` et `updatedAt`.
+Ce sont les instants où le serveur a créé l’élément, puis l’a modifié pour la dernière fois.
+Les clients s’en servent pour trier, synchroniser et détecter les changements.
+
+[[API-018]]
+*API-018.* Une réponse DEVRAIT omettre un champ sans valeur plutôt qu’envoyer `null`.
+Un client DOIT traiter de la même façon un champ absent et un champ `null`.
+Dans un correctif de fusion, `null` supprime un champ.
+La forme de la requête diffère donc de celle de la réponse.
+Une lecture commune des valeurs absentes évite deux sens pour un même état.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

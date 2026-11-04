@@ -1,8 +1,29 @@
-= Specification title
+= FPSOT RESTful API specification
 include::_fpsot-terms.adoc[]
 
-Replace this page with the normative text of the specification.
-Start with the scope, then the conformance classes, then the requirements.
+This specification sets the common rules for every {abbr-rest-first} {abbr-api-first} that an {abbr-fpsot-first} specification defines.
+A domain specification, such as the registry engine, builds on these rules and does not repeat them.
+
+The rules come in ten parts.
+
+* xref:http.adoc[Methods and status codes] set how an {abbr-api} uses the methods, the status codes and conditional requests.
+* xref:resources.adoc[Resources] set how an {abbr-api} names and shapes collections and items.
+* xref:openapi.adoc[Descriptions] set how to describe each {abbr-api} in OpenAPI.
+* xref:errors.adoc[Errors] set how an {abbr-api} reports a problem.
+* xref:collections.adoc[Pages, filters and sorting] set how a client reads a long collection.
+* xref:versions.adoc[Versions] set how an {abbr-api} changes without breaking its clients.
+* xref:retries.adoc[Retries] set how a client repeats a request safely.
+* xref:languages.adoc[Formats and languages] set the media types and the language of the text an {abbr-api} returns.
+* xref:security.adoc[Security] sets the transport, the security headers, access control and rate limits.
+* xref:events.adoc[Events] set the format of the events an {abbr-api} publishes.
+
+This specification builds on three other {abbr-fpsot} specifications.
+The naming specification sets the form of paths, field names, values and event types.
+The data types specification sets how to write dates, money, identifiers and bilingual text.
+The internationalization specification sets how a server picks a language for the text it writes.
+
+This specification does not define how people sign in or how a server issues tokens.
+It points to the OAuth 2.0 and OpenID Connect standards for that.
 
 == Conformance
 
@@ -11,24 +32,21 @@ ____
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in all capitals, as shown here.
 ____
 
-The French version uses the keywords of requirement WRT-011 of the {abbr-fpsot-first} writing specification.
+The keywords follow requirement WRT-010 of the {abbr-fpsot} writing specification.
+The French version uses the French keywords of WRT-011.
 
-== Requirements
+There are two conformance classes.
 
-Give each requirement an anchor line with its ID, directly above its paragraph.
-The anchor looks like `+[[XYZ-001]]+`.
-The example below shows the form. Replace it with the first requirement.
+* An *{abbr-api}* conforms when its server and its published description meet every MUST rule that applies to a server.
+* A *client* conforms when it meets every MUST rule that names the client.
 
-[[TPL-001]]
-*TPL-001.* A normative statement MUST use one of the {abbr-bcp-first} 14 keywords in capitals.
-The keyword gives the rule its strength.
+A domain specification conforms when every {abbr-api} it defines can conform.
+It can add stricter rules, but it cannot relax a rule of this specification.
 
 == Document history
-
-Add one row for each version that changes this page.
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
-|0.1.0 |2026-11-03 |First version.
+|0.1.0 |2026-11-04 |First version.
 |===

@@ -1,5 +1,9 @@
 # Scope
 
-[Include a detailed description of this Working Group’s Scope.  This Scope is important is it establishes the bounds of each contributor's and licensee's patent commitment. For guidance on drafting an appropriate Scope, you may find [ISO's guidance (see page 5)](https://www.iso.org/files/live/sites/isoorg/files/developing_standards/docs/en/how-to-write-standards.pdf "ISO How To Write Standards Guide") helpful.]
+This Working Group develops the FPSOT RESTful API specification.
+
+The specification covers the common rules for HTTP APIs that FPSOT specifications define: the use of HTTP methods, status codes and conditional requests; the paths and representations of resources; OpenAPI descriptions; errors as problem details; pages, filters and sorting; versions and deprecation; safe retries; media types and languages; transport security, security headers, cross-origin requests, access control and rate limits; and events in the CloudEvents format.
+
+It does not define how people sign in or how tokens are issued, which belong to OAuth 2.0 and OpenID Connect. It does not define the resources of any domain, which belong to domain specifications.
 
 Any changes of Scope are not retroactive.

@@ -1,0 +1,70 @@
+= Versions
+include::_fpsot-terms.adoc[]
+
+Une {abbr-api-first} change avec le temps, mais ses clients ne peuvent pas tous changer en même temps.
+Ces règles permettent à une {abbr-api} d’évoluer sans briser les clients qui en dépendent.
+
+== Versions majeures
+
+[[API-050]]
+*API-050.* Le chemin DOIT commencer par la version majeure, comme `/v1/`.
+Le chemin NE DOIT PAS contenir de version mineure ni de version de correctif.
+Une {abbr-api} NE DOIT PAS choisir une version par un en-tête, un paramètre de requête ou un type de média.
+Une version dans le chemin est visible dans chaque journal, lien et signet.
+Elle permet aussi à une passerelle d’envoyer chaque version vers son propre serveur.
+
+[[API-051]]
+*API-051.* Un changement à l’intérieur d’une version majeure NE DOIT PAS briser un client qui suit ces règles.
+Les changements suivants brisent un client et exigent une nouvelle version majeure.
+
+* Supprimer ou renommer une opération, un champ, un paramètre ou une valeur d’énumération.
+* Changer le type, le format ou le sens d’un champ.
+* Rendre obligatoire une entrée facultative, ou ajouter une entrée obligatoire.
+* Accepter moins de valeurs qu’avant.
+* Changer une valeur par défaut, un code d’état ou un type de problème.
+
+Un service public ne peut pas connaître tous ses clients.
+Il ne peut donc pas leur demander à tous de changer en même temps.
+
+[[API-052]]
+*API-052.* Un client DOIT ignorer un champ ou un en-tête qu’il ne connaît pas.
+Un client DEVRAIT traiter une valeur d’énumération qu’il ne connaît pas, par exemple comme « autre ».
+Un serveur peut alors ajouter un champ ou une valeur à l’intérieur d’une version majeure.
+Les clients qui suivent cette règle continuent de fonctionner après chaque ajout.
+
+[[API-053]]
+*API-053.* Le champ `info.version` de la description DOIT donner la version de la description, selon Semantic Versioning 2.0.0.
+Son numéro majeur DOIT correspondre à la version majeure du chemin.
+Les clients et les acheteurs voient alors les changements de chaque version.
+
+== Opérations déconseillées et retrait
+
+[[API-054]]
+*API-054.* Une opération ou une version déconseillée DOIT envoyer un en-tête `Deprecation` dans chaque réponse.
+L’en-tête suit le {abbr-rfc-first} 9745.
+La description DOIT marquer l’opération comme `deprecated`.
+Le serveur DEVRAIT aussi envoyer un en-tête `Link` de type de relation `deprecation`.
+Ce lien mène à une page qui explique le changement.
+Un client apprend par son propre trafic que l’opération est déconseillée, sans lire aucun avis.
+
+[[API-055]]
+*API-055.* Dès qu’un serveur connaît la date de retrait, il DOIT l’envoyer dans un en-tête `Sunset` du {abbr-rfc} 8594.
+La date de retrait DOIT tomber au moins 12 mois après le premier en-tête `Deprecation`.
+La version majeure précédente DOIT rester disponible jusqu’à cette date.
+Un retrait DOIT enlever une opération seulement dans une nouvelle version majeure, comme l’exige <<API-051,API-051>>.
+Les organismes publics planifient et financent leurs changements un an à l’avance.
+Un préavis plus court forcerait un client à changer avant d’en avoir le budget.
+
+[[API-056]]
+*API-056.* Après la date de retrait, chaque requête vers la version retirée DOIT recevoir `410 Gone`.
+Le type de problème est `version-retired`.
+Le membre `detail` DEVRAIT indiquer la version qui la remplace.
+Le client reçoit alors une erreur claire plutôt qu’un `404 Not Found` qui ressemble à une faute de frappe.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

@@ -1,9 +1,29 @@
-= Titre de la spécification
-:translation-status: pending
+= Spécification FPSOT sur les API RESTful
 include::_fpsot-terms.adoc[]
 
-Remplacez cette page par le texte normatif de la spécification.
-Commencez par la portée, puis les classes de conformité, puis les exigences.
+Cette spécification fixe les règles communes à toute {abbr-api-first} {abbr-rest-first} que définit une spécification de la {abbr-fpsot-first}.
+Une spécification de domaine, comme le moteur de registre, s’appuie sur ces règles et ne les répète pas.
+
+Les règles forment dix parties.
+
+* Les xref:http.adoc[méthodes et codes d’état] fixent l’emploi des méthodes, des codes d’état et des requêtes conditionnelles.
+* Les xref:resources.adoc[ressources] fixent le nom et la forme des collections et des éléments.
+* Les xref:openapi.adoc[descriptions] fixent comment décrire chaque {abbr-api} en OpenAPI.
+* Les xref:errors.adoc[erreurs] fixent comment une {abbr-api} signale un problème.
+* Les xref:collections.adoc[pages, filtres et tris] fixent comment un client lit une longue collection.
+* Les xref:versions.adoc[versions] fixent comment une {abbr-api} évolue sans briser ses clients.
+* Les xref:retries.adoc[nouvelles tentatives] fixent comment un client répète une requête sans risque.
+* Les xref:languages.adoc[formats et langues] fixent les types de médias et la langue des textes que renvoie une {abbr-api}.
+* La xref:security.adoc[sécurité] fixe le transport, les en-têtes de sécurité, le contrôle d’accès et les limites de débit.
+* Les xref:events.adoc[événements] fixent le format des événements que publie une {abbr-api}.
+
+Cette spécification s’appuie sur trois autres spécifications de la {abbr-fpsot}.
+La spécification de nommage fixe la forme des chemins, des noms de champs, des valeurs et des types d’événements.
+La spécification des types de données fixe comment écrire les dates, les montants, les identifiants et les textes bilingues.
+La spécification d’internationalisation fixe comment un serveur choisit la langue des textes qu’il rédige.
+
+Cette spécification ne définit pas comment les personnes se connectent ni comment un serveur émet des jetons.
+Elle renvoie pour cela aux normes OAuth 2.0 et OpenID Connect.
 
 == Conformité
 
@@ -12,24 +32,21 @@ ____
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in all capitals, as shown here.
 ____
 
-La version française emploie les mots clés français de la spécification de rédaction de la {abbr-fpsot-first}, à l'exigence WRT-011.
+Les mots clés suivent l’exigence WRT-010 de la spécification de rédaction de la {abbr-fpsot}.
+La version française emploie les mots clés français de l’exigence WRT-011.
 
-== Exigences
+Il existe deux classes de conformité.
 
-Donnez à chaque exigence une ancre avec son identifiant, juste au-dessus de son paragraphe.
-L'ancre ressemble à `+[[XYZ-001]]+`.
-L'exemple ci-dessous montre la forme. Remplacez-le par la première exigence.
+* Une *{abbr-api}* est conforme quand son serveur et sa description publiée respectent toutes les règles DOIT qui visent un serveur.
+* Un *client* est conforme quand il respecte toutes les règles DOIT qui nomment le client.
 
-[[TPL-001]]
-*TPL-001.* Un énoncé normatif DOIT employer un des mots clés du {abbr-bcp-first} 14, en majuscules.
-Le mot clé donne sa force à la règle.
+Une spécification de domaine est conforme quand chaque {abbr-api} qu’elle définit peut être conforme.
+Elle peut ajouter des règles plus strictes, mais elle ne peut pas assouplir une règle de cette spécification.
 
 == Historique du document
-
-Ajoutez une ligne pour chaque version qui modifie cette page.
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
-|0.1.0 |2026-11-03 |Première version.
+|0.1.0 |2026-11-04 |Première version.
 |===

@@ -1,0 +1,26 @@
+# FPSOT RESTful API specification
+
+> Common rules for every HTTP API that an FPSOT specification defines: methods and status codes, resources, OpenAPI descriptions, problem details errors, cursor pages, versions, idempotent retries, languages, security and CloudEvents events.
+
+## Specification
+
+- [Overview](spec/en/index.adoc): scope, parts and conformance.
+- [Methods and status codes](spec/en/http.adoc): API-001 to API-009.
+- [Resources](spec/en/resources.adoc): API-010 to API-018.
+- [Descriptions](spec/en/openapi.adoc): API-020 to API-027.
+- [Errors](spec/en/errors.adoc): API-030 to API-037.
+- [Pages, filters and sorting](spec/en/collections.adoc): API-040 to API-049.
+- [Versions](spec/en/versions.adoc): API-050 to API-056.
+- [Retries](spec/en/retries.adoc): API-060 to API-063.
+- [Formats and languages](spec/en/languages.adoc): API-070 to API-074.
+- [Security](spec/en/security.adoc): API-080 to API-096.
+- [Events](spec/en/events.adoc): API-100 to API-104.
+
+## Guides
+
+- [Design an API that follows the rules](docs/modules/en/pages/index.adoc)
+
+## Optional
+
+- [Agent skill](skill/SKILL.md)
+- [Français](spec/fr/index.adoc)

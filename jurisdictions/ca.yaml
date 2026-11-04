@@ -1,0 +1,48 @@
+code: CA
+name: {en: Canada, fr: Canada}
+rows:
+  - id: API-020
+    text: {en: "REST APIs are documented with OpenAPI, and the documentation stays current. No OpenAPI version is set.", fr: "Les API REST sont documentées avec OpenAPI, et la documentation reste à jour. Aucune version d’OpenAPI n’est fixée."}
+    status: looser
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-030
+    text: {en: "Errors use HTTP status codes, avoid custom error codes and hide internal details. No error body format is set.", fr: "Les erreurs emploient les codes d’état HTTP, évitent les codes d’erreur propres et cachent les détails internes. Aucun format de corps d’erreur n’est fixé."}
+    status: looser
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-041
+    text: {en: "Large data sets must be paginated. Page numbers, offsets and since-limit styles are all allowed.", fr: "Les grands ensembles de données doivent être paginés. Les numéros de page, les décalages et la forme depuis-limite sont tous permis."}
+    status: looser
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-050
+    text: {en: "Every API is versioned with major.minor.patch. Only the major version goes in the URL, never in a parameter or header.", fr: "Chaque API a une version majeure.mineure.correctif. Seule la version majeure figure dans l’adresse URL, jamais dans un paramètre ni un en-tête."}
+    status: same
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-055
+    text: {en: "The previous major version stays supported. Deprecation policies and timelines are set in advance, but no notice period is given.", fr: "La version majeure précédente reste prise en charge. Les politiques et les échéances d’abandon sont fixées à l’avance, mais aucun préavis n’est chiffré."}
+    status: looser
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-072
+    text: {en: "The API replies in the language that Accept-Language asks for, and in both official languages when the header is absent. FPSOT returns every language by default.", fr: "L’API répond dans la langue que demande Accept-Language, et dans les deux langues officielles sans cet en-tête. Par défaut, la FPSOT renvoie toutes les langues."}
+    status: stricter
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-080
+    text: {en: "Web sites and web services must use HTTPS, and must redirect HTTP requests to HTTPS. FPSOT only allows this redirect.", fr: "Les sites et les services Web doivent employer HTTPS et rediriger les requêtes HTTP vers HTTPS. La FPSOT permet seulement cette redirection."}
+    status: stricter
+    source: {title: "Web Sites and Services Management Configuration Requirements, Standard on Enterprise IT Service Common Configurations", date: "2024-10-25", url: "https://www.canada.ca/en/government/system/digital-government/policies-standards/enterprise-it-service-common-configurations/web-sites.html", archive: "https://web.archive.org/web/20251115162619/https://www.canada.ca/en/government/system/digital-government/policies-standards/enterprise-it-service-common-configurations/web-sites.html"}
+    last_checked: "2026-11-04"
+  - id: API-090
+    text: {en: "Tokens must be JWT and expire after 24 hours at most. OAuth 2.0 and OpenID Connect are named only as examples.", fr: "Les jetons doivent être des JWT et expirer au plus tard après 24 heures. OAuth 2.0 et OpenID Connect ne sont nommés qu’à titre d’exemples."}
+    status: stricter
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"
+  - id: API-094
+    text: {en: "Each API should have a service level agreement with throughput limits, and should throttle requests to them.", fr: "Chaque API devrait avoir une entente de niveau de service avec des limites de débit, et devrait limiter les requêtes en conséquence."}
+    status: looser
+    source: {title: "Government of Canada Standards on APIs", date: "2026-08-12", url: "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html", archive: "https://web.archive.org/web/20261017061648/https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/government-canada-standards-apis.html"}
+    last_checked: "2026-11-04"

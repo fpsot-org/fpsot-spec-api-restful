@@ -1,0 +1,115 @@
+= Erreurs
+include::_fpsot-terms.adoc[]
+
+Toute {abbr-api-first} signale un problème dans le même format.
+Ce format est l’objet de détails de problème du {abbr-rfc-first} 9457.
+
+[[API-030]]
+*API-030.* Toute réponse avec un code d’état `4xx` ou `5xx` DOIT porter un corps de détails de problème.
+Son type de média DOIT être `application/problem+json`.
+Le serveur DOIT envoyer ce format quel que soit l’en-tête `Accept` de la requête.
+Avec un seul format, un client et une passerelle traitent chaque erreur de toute {abbr-api} avec le même code.
+
+[[API-031]]
+*API-031.* Le membre `type` DOIT être une {abbr-uri-first} {abbr-https-first} absolue qui nomme une seule sorte de problème, jamais `about:blank`.
+L’{abbr-uri} DOIT rester la même tant que cette sorte de problème existe.
+C’est un identifiant stable, qu’une page existe déjà à cette adresse ou non.
+Elle DEVRAIT mener à une page qui explique le problème en anglais et en français.
+Les clients choisissent leur traitement selon le `type`, qui joue donc le rôle d’un code d’erreur stable.
+La page indique à une personne qui développe ce qui s’est mal passé et comment le corriger.
+
+[[API-032]]
+*API-032.* Une {abbr-api} DOIT employer un type de ce tableau quand il correspond au problème.
+Une spécification de domaine DOIT définir ses propres types, et DOIT les publier avec la description.
+Chaque type du tableau est une {abbr-uri} qui commence par `https://fpsot.org/problems/`, suivie du nom.
+La {abbr-fpsot-first} publiera une page en anglais à l’adresse de chaque type commun avant la version 1.0.
+La version française de chaque page sera sous `https://fpsot.org/fr/problems/`.
+
+[cols="2,1,3",options="header"]
+|===
+|Nom |État |Problème
+|`malformed-request` |400 |Le corps ou la syntaxe de la requête n’est pas valide.
+|`invalid-parameter` |400 |Un paramètre de requête ou un en-tête a une valeur erronée, ou est inconnu.
+|`invalid-cursor` |400 |Le curseur de page n’est pas valide ou a expiré.
+|`unauthenticated` |401 |La requête n’a pas d’authentifiants valides.
+|`forbidden` |403 |Le client n’a pas le droit de faire cette action.
+|`not-found` |404 |La ressource n’existe pas, ou le client n’a pas le droit de savoir qu’elle existe.
+|`method-not-allowed` |405 |La ressource n’accepte pas cette méthode.
+|`not-acceptable` |406 |Le serveur ne peut répondre dans aucun format qu’accepte le client.
+|`conflict` |409 |La requête contredit l’état actuel de la ressource.
+|`idempotency-key-in-use` |409 |Une requête avec la même clé d’idempotence est encore en cours.
+|`version-retired` |410 |La version de l’{abbr-api} a atteint sa date de retrait.
+|`precondition-failed` |412 |La ressource a changé depuis la dernière lecture du client.
+|`content-too-large` |413 |Le corps de la requête est trop grand.
+|`unsupported-media-type` |415 |Le serveur n’accepte pas le format du corps de la requête.
+|`validation-failed` |422 |Une ou plusieurs valeurs du corps enfreignent une règle.
+|`idempotency-key-reused` |422 |Le client a déjà employé la clé d’idempotence pour une autre requête.
+|`precondition-required` |428 |La requête exige un en-tête `If-Match`.
+|`rate-limited` |429 |Le client a envoyé trop de requêtes.
+|`internal-error` |500 |Le serveur a échoué.
+|`unavailable` |503 |Le serveur ne peut pas répondre pour le moment.
+|===
+
+Des types communs évitent à chaque spécification de domaine de définir encore les mêmes problèmes.
+Un client traite alors les problèmes courants de toute {abbr-api} avec le même code.
+
+[[API-033]]
+*API-033.* Le membre `title` DOIT être un court résumé, identique dans une langue chaque fois que le type se produit.
+Le membre `detail` DEVRAIT expliquer cette occurrence et dire ce que le client peut faire ensuite.
+Les deux DOIVENT être dans la langue que le serveur choisit selon la page xref:languages.adoc[Formats et langues].
+Chaque type DOIT avoir un titre en anglais et en français.
+Des personnes lisent ces membres, donc les règles de rédaction de l’exigence WRT-040 s’y appliquent.
+Un titre fixe par type permet à un serveur de le tirer d’un fichier de traduction.
+
+[[API-034]]
+*API-034.* Le membre `status` DOIT être présent et DOIT être égal au code d’état de la réponse.
+Un mandataire peut changer le code d’état, et le corps dit alors encore la vérité.
+
+[[API-035]]
+*API-035.* Le membre `instance` DEVRAIT désigner cette occurrence par une {abbr-uri}, comme `urn:uuid:` suivi d’un identifiant.
+Le serveur DEVRAIT écrire le même identifiant dans ses journaux.
+Le personnel de soutien trouve alors les journaux d’une requête échouée sans autre détail.
+
+[[API-036]]
+*API-036.* Un problème `validation-failed` ou `invalid-parameter` DOIT énumérer chaque faute dans un membre `errors`.
+Chaque entrée de `errors` DOIT avoir un `detail` et DOIT nommer l’endroit de la faute.
+Une faute dans le corps emploie `pointer`, un pointeur {abbr-json-first} Pointer du {abbr-rfc} 6901 vers le champ.
+Une faute dans un paramètre de requête ou un en-tête emploie `parameter`, avec son nom.
+Un formulaire peut alors afficher chaque message près du bon champ, et la personne corrige tout d’un coup.
+
+[[API-037]]
+*API-037.* Les membres d’extension DOIVENT suivre la spécification de nommage pour les noms de champs.
+Le corps NE DOIT PAS révéler de trace de pile ni de requête de base de données.
+Il NE DOIT PAS révéler de nom d’hôte interne ni de secret.
+Il NE DOIT PAS révéler de renseignements personnels sur une autre personne que le client.
+Les messages d’erreur arrivent dans des journaux, des écrans et des billets de soutien.
+Des personnes malveillantes ou curieuses peuvent les y lire.
+
+== Exemple
+
+[source,http]
+----
+HTTP/1.1 422 Unprocessable Content
+Content-Type: application/problem+json
+Content-Language: fr
+
+{
+  "type": "https://fpsot.org/problems/validation-failed",
+  "title": "Certaines valeurs ne sont pas valides.",
+  "status": 422,
+  "detail": "Corrigez les deux champs ci-dessous, puis envoyez de nouveau la requête.",
+  "instance": "urn:uuid:01a1a0d9-f100-7c6e-8f12-3b4a5c6d7e8f",
+  "errors": [
+    {"pointer": "/name/fr", "detail": "Entrez le nom en français."},
+    {"pointer": "/fee/currency", "detail": "Employez un code de devise comme CAD."}
+  ]
+}
+----
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

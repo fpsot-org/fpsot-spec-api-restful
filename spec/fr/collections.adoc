@@ -1,0 +1,110 @@
+= Pages, filtres et tris
+include::_fpsot-terms.adoc[]
+
+Une collection peut contenir des millions d’éléments.
+Un client la lit une page à la fois, et demande au serveur de la filtrer et de la trier.
+
+== Pages
+
+[[API-040]]
+*API-040.* Une requête `GET` sur une collection DOIT renvoyer une page d’éléments, jamais la collection entière.
+Le client PEUT demander une taille de page avec le paramètre de requête `pageSize`.
+La description DOIT indiquer la taille de page par défaut et la plus grande taille.
+Un `pageSize` supérieur à la plus grande taille DOIT recevoir `400 Bad Request` avec le type `invalid-parameter`.
+Un serveur PEUT renvoyer moins d’éléments que la taille de page.
+Un serveur qui renvoie tout d’un coup manque de mémoire, et ses clients aussi.
+
+[[API-041]]
+*API-041.* Une {abbr-api-first} DOIT paginer une collection avec un curseur opaque, sans numéro de page ni décalage.
+Le client NE DOIT PAS construire, modifier ni analyser un curseur.
+Un curseur DOIT contenir les filtres et l’ordre de tri de la première requête, ou y renvoyer.
+Un curseur non valide ou expiré DOIT recevoir `400 Bad Request` avec le type `invalid-cursor`.
+Avec un décalage, un élément ajouté ou supprimé entre deux requêtes déplace toutes les pages.
+Le client sauterait alors des éléments ou en lirait deux fois.
+
+[[API-042]]
+*API-042.* Une page DOIT être un objet {abbr-json-first} qui contient les éléments dans un membre `items`.
+Quand une page suivante existe, la page DOIT porter son {abbr-url-first} absolue dans un membre `next`.
+La réponse DEVRAIT aussi la porter dans un en-tête `Link` de type `next`, selon le {abbr-rfc-first} 8288.
+La dernière page NE DOIT PAS avoir de membre `next`.
+Le membre `next` fait partie du schéma, donc les clients produits par des outils le trouvent.
+L’en-tête `Link` permet aux outils génériques de suivre les pages sans connaître le schéma.
+
+[[API-043]]
+*API-043.* Une page NE DEVRAIT PAS inclure le nombre total d’éléments, sauf si le client le demande.
+Une spécification de domaine PEUT définir un paramètre pour cette demande.
+Compter une grande collection est lent, et le total change pendant que le client lit.
+
+== Filtres
+
+[[API-044]]
+*API-044.* Un filtre sur un champ DOIT employer un paramètre de requête au nom de ce champ, comme `status=active`.
+Un filtre sur un intervalle DOIT ajouter `From` ou `To` au nom du champ, comme `createdAtFrom`.
+La spécification de nommage de la {abbr-fpsot-first} permet ces suffixes, et `From` inclut la borne tandis que `To` l’exclut.
+Un filtre sur des renseignements personnels DOIT plutôt suivre <<API-049,API-049>>.
+La description DOIT énumérer chaque filtre qu’accepte une opération.
+Les clients construisent alors un filtre à partir du schéma qu’ils connaissent déjà.
+
+[[API-045]]
+*API-045.* Un paramètre de requête inconnu ou de valeur erronée DOIT recevoir `400 Bad Request`.
+Le type de problème est `invalid-parameter`.
+Un serveur qui ignore un filtre mal orthographié renvoie les mauvais éléments, et le client n’apprend jamais pourquoi.
+
+[[API-046]]
+*API-046.* Une recherche en texte libre DEVRAIT employer le paramètre de requête `search`.
+La description DOIT indiquer quels champs la recherche lit.
+Une recherche sur des renseignements personnels DOIT plutôt suivre <<API-049,API-049>>.
+Un seul nom de paramètre permet à une interface d’offrir la même boîte de recherche pour chaque collection.
+
+== Tri
+
+[[API-047]]
+*API-047.* Un client PEUT demander un ordre avec le paramètre de requête `sortBy`.
+Sa valeur est un nom de champ, ou plusieurs noms séparés par des virgules.
+Le paramètre de requête `sortOrder` PEUT alors valoir `ascending` ou `descending`, et `ascending` est la valeur par défaut.
+La description DOIT énumérer les champs selon lesquels chaque opération peut trier.
+Une forme commune permet à tout client de trier toute collection de la même façon.
+
+[[API-048]]
+*API-048.* Toute collection DOIT avoir un ordre par défaut, que la description indique.
+Tout ordre DOIT se terminer par le champ `id`, pour que deux éléments ne soient jamais à égalité.
+Un ordre stable est la condition pour qu’un curseur fonctionne.
+Sans lui, un élément peut paraître sur deux pages ou sur aucune.
+
+== Recherches sur des renseignements personnels
+
+[[API-049]]
+*API-049.* Une recherche ou un filtre sur des renseignements personnels DOIT employer `POST` sur la sous-ressource `searches` de la collection.
+Les renseignements personnels comprennent les noms, les dates de naissance et les identifiants de personnes.
+Les critères DOIVENT figurer dans un corps {abbr-json}, comme dans `POST /v1/parties/searches`.
+La réponse DOIT être une page au format de <<API-042,API-042>>, et son curseur NE DOIT PAS contenir les critères.
+Les serveurs et les mandataires écrivent les adresses dans des journaux, mais pas les corps.
+Les critères restent ainsi hors des journaux, comme l’exige xref:security.adoc#API-085[API-085].
+
+== Exemple
+
+[source,http]
+----
+GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=descending&pageSize=2 HTTP/1.1
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
+
+{
+  "items": [
+    {"id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23", "status": "active", "updatedAt": "2026-11-02T14:05:00Z"},
+    {"id": "01a19671-c1c0-7f00-8c11-2d3e4f5a6b7c", "status": "active", "updatedAt": "2026-11-01T09:30:00Z"}
+  ],
+  "next": "https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
+}
+----
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

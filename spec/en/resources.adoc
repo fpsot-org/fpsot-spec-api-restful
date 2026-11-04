@@ -1,0 +1,71 @@
+= Resources
+include::_fpsot-terms.adoc[]
+
+An {abbr-api-first} offers resources.
+A collection holds items of one kind, and each item has its own address.
+
+== Paths
+
+[[API-010]]
+*API-010.* An {abbr-api} MUST address a collection as `/v<major>/<collection>` and an item as `/v<major>/<collection>/{<resource>Id}`.
+The collection name MUST be a plural noun.
+The path variable MUST have the name of the field that refers to the item.
+Both follow the {abbr-fpsot-first} naming specification.
+An example is `/v1/assets/01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23`.
+One pattern lets a client guess an address and read it at a glance.
+
+[[API-011]]
+*API-011.* The last segment of an item path MUST be the identifier of the item.
+Its form comes from the {abbr-fpsot} data types specification.
+It MUST NOT be a database row number or any other value that reveals how many items exist.
+With a sequential number, anyone can count the items and guess the address of the next one.
+
+[[API-012]]
+*API-012.* A path SHOULD NOT go deeper than one collection under a top-level item.
+One level is allowed, as in `/v1/parties/{partyId}/addresses`.
+A path such as `/v1/parties/{partyId}/addresses/{addressId}/notes` goes too deep.
+Deep paths are long, repeat information and break when an item moves to another parent.
+
+[[API-013]]
+*API-013.* A path MUST NOT end with a slash or with a file extension such as `.json`.
+A server SHOULD answer a request for such a path with `308 Permanent Redirect` to the canonical path.
+Each resource then has one address, and caches and links stay consistent.
+
+[[API-014]]
+*API-014.* An action that does not fit a method on a resource SHOULD first become a new resource.
+For example, `POST /v1/applications/{applicationId}/submissions` records a submission.
+When no resource fits, an {abbr-api} MAY use `POST` on `/<collection>/{<resource>Id}/<action>`.
+The action is then a verb, in the naming form of path segments.
+A resource keeps a record of the action, and the methods keep their usual meaning.
+
+== Representations
+
+[[API-015]]
+*API-015.* A request or response body MUST be a {abbr-json-first} object at its top level.
+It MUST NOT be a bare array or value.
+A server can then add a field to any response without breaking its clients.
+
+[[API-016]]
+*API-016.* Field names and query parameter names MUST follow the {abbr-fpsot} naming specification.
+Field values MUST follow the {abbr-fpsot} data types specification.
+This covers dates and times, money, identifiers and bilingual text.
+Every {abbr-api} then writes the same value the same way, and one client library reads them all.
+
+[[API-017]]
+*API-017.* Every item representation MUST include its `id`.
+It SHOULD include `createdAt` and `updatedAt`, the instants when the server created and last changed the item.
+Clients use them to sort, to synchronize and to detect changes.
+
+[[API-018]]
+*API-018.* A response SHOULD leave out a field that has no value, rather than send `null`.
+A client MUST treat an absent field and a `null` field the same way.
+In a merge patch, `null` removes a field, so the request form differs from the response form.
+A shared reading of absent values avoids two meanings for the same state.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===
