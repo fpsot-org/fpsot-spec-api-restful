@@ -44,8 +44,8 @@ Une personne malveillante se sert d’un numéro de version pour choisir une fai
 *API-084.* Un serveur NE DOIT PAS envoyer d’en-têtes {abbr-cors-first}, sauf pour une application de navigateur d’une autre origine.
 Dans ce cas, il DOIT autoriser uniquement les origines d’une liste fixe.
 Il NE DOIT PAS recopier l’`Origin` de la requête dans sa réponse.
-Il NE DOIT PAS combiner `Access-Control-Allow-Origin: *` avec des authentifiants.
-Une {abbr-api} de données ouvertes sans authentifiants PEUT autoriser toutes les origines avec `*`.
+Il NE DOIT PAS combiner `+Access-Control-Allow-Origin: *+` avec des authentifiants.
+Une {abbr-api} de données ouvertes sans authentifiants PEUT autoriser toutes les origines avec `+*+`.
 Avec une règle trop souple, toute page Web peut lire les données d’une personne au moyen de sa session.
 
 == Données dans les requêtes

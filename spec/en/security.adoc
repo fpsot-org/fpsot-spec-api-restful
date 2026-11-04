@@ -45,8 +45,8 @@ An attacker uses a version number to pick a known flaw.
 *API-084.* A server MUST NOT send {abbr-cors-first} headers unless a browser application on another origin needs the {abbr-api}.
 When it does, it MUST allow only the origins on a fixed list.
 It MUST NOT copy the `Origin` of the request into its answer.
-It MUST NOT combine `Access-Control-Allow-Origin: *` with credentials.
-An open data {abbr-api} without credentials MAY allow every origin with `*`.
+It MUST NOT combine `+Access-Control-Allow-Origin: *+` with credentials.
+An open data {abbr-api} without credentials MAY allow every origin with `+*+`.
 A loose rule lets any web page read a user's data with that user's session.
 
 == Data in requests
