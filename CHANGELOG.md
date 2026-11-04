@@ -6,15 +6,22 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-04
+
 ### Added
 
-- `AGENTS.md`, a book per language (`spec/<lang>/book.adoc`) ending with the glossary, and a document history on each page.
-- Example requirement TPL-001 and an example comparison row in `jurisdictions/baseline.yaml`.
-- `.gitignore` for the files that the continuous integration writes.
+- Methods and status codes, API-001 to API-009: RFC 9110 methods, JSON Merge Patch, a fixed list of status codes, `ETag` and required `If-Match`.
+- Resources, API-010 to API-018: plural kebab-case paths under `/v<major>/`, opaque identifiers, JSON object bodies, field rules from the naming and data types specifications.
+- Descriptions, API-020 to API-027: a complete, published OpenAPI 3.1 description with JSON Schema 2020-12, served at `/v<major>/openapi`.
+- Errors, API-030 to API-037: problem details (RFC 9457) with stable `type` URIs, a shared set of types, translated titles and field-level `errors`.
+- Pages, filters and sorting, API-040 to API-048: opaque cursors, a `next` member and `Link` header, field filters, `sortBy` and `sortOrder`.
+- Versions, API-050 to API-056: major version in the path, no breaking change within a major, `Deprecation` and `Sunset` headers, 12 months of notice.
+- Retries, API-060 to API-063: the `Idempotency-Key` header and client back-off.
+- Formats and languages, API-070 to API-074: JSON in UTF-8, full bilingual fields, `Accept-Language` for server-written text.
+- Security, API-080 to API-096: HTTPS only with HSTS, security headers, CORS, OAuth 2.0 and OpenID Connect, object-level access checks, rate limits, inventory.
+- Events, API-100 to API-104: CloudEvents 1.0.2 in JSON, required attributes, duplicate-safe consumers.
+- Comparison data for the international baseline, Canada and Québec.
+- A how-to guide, the agent skill, `llms.txt` and the book in both languages.
 
-### Changed
-
-- The continuous integration runs the documentation checks, and releases can attach the PDF books.
-- Pages include the term base attributes. The guide page has a page type.
-- The French conformance section quotes RFC 8174 and points to WRT-011.
-- `NOTICE` spells out FPSOT. `NOTICES.md` names the Code of Conduct contact.
+[Unreleased]: https://github.com/fpsot-org/fpsot-spec-api-restful/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/fpsot-org/fpsot-spec-api-restful/releases/tag/v0.1.0

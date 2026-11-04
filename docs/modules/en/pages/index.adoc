@@ -1,15 +1,81 @@
-= Guide
-:page-type: explanation
+= Design an API that follows the rules
+:page-type: how-to
 include::_fpsot-terms.adoc[]
 
-This page explains the specification for the people who adopt it.
-Each guide page has one type.
-It is a tutorial, a how-to guide, a reference or an explanation.
+This guide shows how to design a new {abbr-api-first} for an {abbr-fpsot-first} domain specification.
+The example is a small {abbr-api} for permits.
+Each step names the rules it meets.
+
+== Name the resources
+
+Pick the things that the {abbr-api} manages, and name each collection with a plural noun.
+For permits, the paths are `/v1/permits` and `/v1/permits/{permitId}`.
+See xref:../../../../spec/en/resources.adoc#API-010[API-010] and xref:../../../../spec/en/resources.adoc#API-011[API-011].
+
+== Write the description first
+
+Start a file `permits.openapi.yaml` in the `api/` folder of the domain specification.
+Set `openapi` to the version that xref:../../../../spec/en/openapi.adoc#API-020[API-020] names.
+Set `info.version` to `1.0.0`.
+For each operation, give an `operationId`, a summary, a description and every response.
+
+[source,yaml]
+----
+paths:
+  /v1/permits/{permitId}:
+    get:
+      operationId: getPermit
+      summary: Read a permit
+      responses:
+        "200":
+          description: The permit.
+          headers:
+            ETag: {schema: {type: string}}
+        "404":
+          $ref: "#/components/responses/NotFound"
+----
+
+== Return pages of items
+
+List operations return `items` and, when more items exist, `next`.
+Accept `pageSize`, filters named after fields, `sortBy` and `sortOrder`.
+State the default and the largest page size in the description.
+See xref:../../../../spec/en/collections.adoc#API-040[API-040] to xref:../../../../spec/en/collections.adoc#API-048[API-048].
+
+== Protect every change
+
+Send a strong `ETag` with every permit.
+Require `If-Match` on `PUT`, `PATCH` and `DELETE`, and `Idempotency-Key` on `POST`.
+A client that retries then never applies the same change twice.
+
+[source,http]
+----
+PATCH /v1/permits/01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23 HTTP/1.1
+Content-Type: application/merge-patch+json
+If-Match: "7f3a"
+Idempotency-Key: "8e0c2f4a-1b6d-4c3e-9a7f-5d2b1e0c9f88"
+
+{"status": "suspended"}
+----
+
+== Report errors
+
+Answer every error with a problem details body.
+Use a shared type, such as `https://fpsot.org/problems/precondition-failed`, when one fits.
+Define a type for each problem of the domain, and write its title in English and in French.
+See xref:../../../../spec/en/errors.adoc#API-030[API-030] to xref:../../../../spec/en/errors.adoc#API-037[API-037].
+
+== Check before you publish
+
+. Run an OpenAPI linter on the description in continuous integration.
+. Test that the server answers as the description says.
+. Check the security headers of a real response with `curl -sI`.
+. Confirm that plain {abbr-http-first} requests get no answer.
 
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
-|0.1.0 |2026-11-03 |First version.
+|0.1.0 |2026-11-04 |First version.
 |===

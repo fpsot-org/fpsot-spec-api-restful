@@ -1,7 +1,27 @@
-= Titre de la spécification
+= Spécification FPSOT sur les API RESTful
 :doctype: book
 :toc:
 
 include::index.adoc[leveloffset=+1]
+
+include::http.adoc[leveloffset=+1]
+
+include::resources.adoc[leveloffset=+1]
+
+include::openapi.adoc[leveloffset=+1]
+
+include::errors.adoc[leveloffset=+1]
+
+include::collections.adoc[leveloffset=+1]
+
+include::versions.adoc[leveloffset=+1]
+
+include::retries.adoc[leveloffset=+1]
+
+include::languages.adoc[leveloffset=+1]
+
+include::security.adoc[leveloffset=+1]
+
+include::events.adoc[leveloffset=+1]
 
 include::glossary.adoc[leveloffset=+1]

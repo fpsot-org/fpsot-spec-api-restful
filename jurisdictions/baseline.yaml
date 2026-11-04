@@ -1,12 +1,87 @@
 # Comparison data. The format is defined by fpsot-spec-doc (model/jurisdiction.yaml).
-# This example row compares requirement TPL-001. Replace it with the rows of this specification.
-# Add one file per jurisdiction, such as ca.yaml or ca/qc.yaml, only when a source exists.
 topics:
-  keywords: {en: Requirement keywords, fr: Mots clés des exigences}
+  conditional-requests: {en: Conditional requests, fr: Requêtes conditionnelles}
+  descriptions: {en: API descriptions, fr: Descriptions d’API}
+  errors: {en: Errors, fr: Erreurs}
+  pagination: {en: Pagination, fr: Pagination}
+  versioning: {en: Versioning, fr: Gestion des versions}
+  deprecation: {en: Deprecation and sunset, fr: Opérations déconseillées et retrait}
+  idempotency: {en: Safe retries, fr: Nouvelles tentatives sûres}
+  languages: {en: Bilingual content, fr: Contenu bilingue}
+  transport-security: {en: Transport security, fr: Sécurité du transport}
+  authentication: {en: Authentication, fr: Authentification}
+  rate-limits: {en: Rate limits, fr: Limites de débit}
+  events: {en: Events, fr: Événements}
 rows:
-  - id: TPL-001
-    topic: keywords
-    requirement: {en: Use the BCP 14 keywords., fr: Utiliser les mots clés du BCP 14.}
-    international: {en: "BCP 14 defines MUST, SHOULD and MAY. Only the capital forms carry that meaning.", fr: "Le BCP 14 définit MUST, SHOULD et MAY. Seules les majuscules ont ce sens."}
-    international_source: {title: "RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words (BCP 14)", version: "BCP 14", date: "2017-05", url: "https://www.rfc-editor.org/info/rfc8174", archive: "https://web.archive.org/web/20261103005743/https://www.rfc-editor.org/info/rfc8174/"}
-    fpsot: {en: "Keywords in capitals, with a fixed French mapping.", fr: "Mots clés en majuscules, avec une correspondance française fixe."}
+  - id: API-009
+    topic: conditional-requests
+    requirement: {en: Changes to an item need If-Match., fr: Les modifications d’un élément exigent If-Match.}
+    international: {en: "A client may send If-Match. When the tag no longer matches, the server answers 412. Nothing makes the header required.", fr: "Un client peut envoyer If-Match. Quand l’étiquette ne correspond plus, le serveur répond 412. Rien ne rend l’en-tête obligatoire."}
+    international_source: {title: "RFC 9110, HTTP Semantics", version: "RFC 9110", date: "2022-06", url: "https://www.rfc-editor.org/rfc/rfc9110", archive: "https://web.archive.org/web/20260520194626/https://www.rfc-editor.org/rfc/rfc9110"}
+    fpsot: {en: "PUT, PATCH and DELETE on an item must carry If-Match. Missing gives 428, stale gives 412.", fr: "PUT, PATCH et DELETE sur un élément doivent porter If-Match. Sans lui, la réponse est 428. Avec une étiquette périmée, elle est 412."}
+  - id: API-020
+    topic: descriptions
+    requirement: {en: Every API has an OpenAPI description., fr: Toute API a une description OpenAPI.}
+    international: {en: "OpenAPI 3.1 describes HTTP APIs, with JSON Schema 2020-12 as its default schema dialect. It does not require anyone to use it.", fr: "OpenAPI 3.1 décrit les API HTTP, avec JSON Schema 2020-12 comme dialecte de schéma par défaut. Elle n’oblige personne à l’employer."}
+    international_source: {title: "OpenAPI Specification", version: "3.1.2", date: "2025-09-19", url: "https://spec.openapis.org/oas/v3.1.2.html", archive: "https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html"}
+    fpsot: {en: "A complete OpenAPI 3.1 description, published with the domain specification and served by the API.", fr: "Une description OpenAPI 3.1 complète, publiée avec la spécification de domaine et servie par l’API."}
+  - id: API-030
+    topic: errors
+    requirement: {en: Errors are problem details., fr: Les erreurs sont des détails de problème.}
+    international: {en: "A problem details object has type, title, status, detail and instance. The type defaults to about:blank, and extension members are allowed.", fr: "Un objet de détails de problème a type, title, status, detail et instance. Le type vaut about:blank par défaut, et des membres d’extension sont permis."}
+    international_source: {title: "RFC 9457, Problem Details for HTTP APIs", version: "RFC 9457", date: "2023-07", url: "https://www.rfc-editor.org/rfc/rfc9457", archive: "https://web.archive.org/web/20260514123618/https://www.rfc-editor.org/rfc/rfc9457"}
+    fpsot: {en: "Every 4xx and 5xx response is problem details, with a stable https type, never about:blank, and a translated title.", fr: "Toute réponse 4xx ou 5xx est un objet de détails de problème, avec un type https stable, jamais about:blank, et un titre traduit."}
+  - id: API-041
+    topic: pagination
+    requirement: {en: Collections are paged with a cursor., fr: Les collections sont paginées par curseur.}
+    international: {en: "The Link header carries typed links, and the registered next relation names the next resource in a series. No paging method is set.", fr: "L’en-tête Link porte des liens typés, et la relation enregistrée next désigne la ressource suivante d’une série. Aucune méthode de pagination n’est fixée."}
+    international_source: {title: "RFC 8288, Web Linking", version: "RFC 8288", date: "2017-10", url: "https://www.rfc-editor.org/rfc/rfc8288", archive: "https://web.archive.org/web/20260427180630/https://www.rfc-editor.org/rfc/rfc8288"}
+    fpsot: {en: "Opaque cursor only, with a next member in the body and a Link header with rel next.", fr: "Curseur opaque seulement, avec un membre next dans le corps et un en-tête Link de relation next."}
+  - id: API-050
+    topic: versioning
+    requirement: {en: Only the major version is in the path., fr: Seule la version majeure figure dans le chemin.}
+    international: {en: "No IETF or W3C standard places API versions. Google's API guidance puts the major version first in the REST path and never exposes minor or patch numbers.", fr: "Aucune norme de l’IETF ou du W3C ne fixe où placer la version d’une API. Les lignes directrices d’API de Google placent la version majeure au début du chemin REST et n’exposent jamais de numéro mineur ni de correctif."}
+    international_source: {title: "AIP-185, API Versioning (secondary reference)", url: "https://google.aip.dev/185", archive: "https://web.archive.org/web/20260926083923/https://google.aip.dev/185"}
+    fpsot: {en: "/v1/ in the path, no version in headers, parameters or media types, and no breaking change within a major.", fr: "/v1/ dans le chemin, aucune version dans les en-têtes, les paramètres ou les types de médias, et aucun changement incompatible dans une version majeure."}
+  - id: API-055
+    topic: deprecation
+    requirement: {en: A sunset date is announced at least 12 months ahead., fr: Une date de retrait est annoncée au moins 12 mois d’avance.}
+    international: {en: "The Sunset header gives the date after which a resource may stop answering. It sets no minimum notice.", fr: "L’en-tête Sunset donne la date après laquelle une ressource peut cesser de répondre. Il ne fixe aucun préavis minimal."}
+    international_source: {title: "RFC 8594, The Sunset HTTP Header Field", version: "RFC 8594", date: "2019-05", url: "https://www.rfc-editor.org/rfc/rfc8594", archive: "https://web.archive.org/web/20260514123619/https://www.rfc-editor.org/rfc/rfc8594"}
+    fpsot: {en: "Deprecation and Sunset headers, a sunset at least 12 months after the first Deprecation header, then 410.", fr: "En-têtes Deprecation et Sunset, un retrait au moins 12 mois après le premier en-tête Deprecation, puis 410."}
+  - id: API-060
+    topic: idempotency
+    requirement: {en: POST and PATCH accept an Idempotency-Key., fr: POST et PATCH acceptent une clé Idempotency-Key.}
+    international: {en: "An active Internet-Draft defines the Idempotency-Key header and the 400, 409 and 422 answers. It is not yet an RFC.", fr: "Un projet Internet actif définit l’en-tête Idempotency-Key et les réponses 400, 409 et 422. Ce n’est pas encore un RFC."}
+    international_source: {title: "The Idempotency-Key HTTP Header Field, draft-ietf-httpapi-idempotency-key-header", version: "08", date: "2026-10-22", url: "https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/", archive: "https://web.archive.org/web/20261104041012/https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/"}
+    fpsot: {en: "Accepted on every POST and PATCH, keys kept at least 24 hours, with the answers of the draft.", fr: "Accepté pour tout POST et tout PATCH, clés gardées au moins 24 heures, avec les réponses du projet."}
+  - id: API-072
+    topic: languages
+    requirement: {en: Bilingual fields return every language., fr: Les champs bilingues renvoient toutes les langues.}
+    international: {en: "A client may list its preferred languages in Accept-Language. The server may use them to pick a representation.", fr: "Un client peut énumérer ses langues préférées dans Accept-Language. Le serveur peut s’en servir pour choisir une représentation."}
+    international_source: {title: "RFC 9110, HTTP Semantics", version: "RFC 9110", date: "2022-06", url: "https://www.rfc-editor.org/rfc/rfc9110", archive: "https://web.archive.org/web/20260520194626/https://www.rfc-editor.org/rfc/rfc9110"}
+    fpsot: {en: "Language maps always hold every language. Accept-Language chooses only the language of text the server writes.", fr: "Les objets de langues contiennent toujours toutes les langues. Accept-Language ne choisit que la langue des textes que rédige le serveur."}
+  - id: API-080
+    topic: transport-security
+    requirement: {en: "HTTPS only, with no plain HTTP answer.", fr: "HTTPS seulement, sans réponse en HTTP simple."}
+    international: {en: "TLS 1.0 and 1.1 must not be negotiated, TLS 1.2 must be supported and TLS 1.3 should be. HSTS is a separate, optional header.", fr: "TLS 1.0 et 1.1 ne doivent pas être négociés, TLS 1.2 doit être pris en charge et TLS 1.3 devrait l’être. HSTS est un en-tête distinct et facultatif."}
+    international_source: {title: "RFC 9325, Recommendations for Secure Use of TLS and DTLS (BCP 195)", version: "RFC 9325", date: "2022-11", url: "https://www.rfc-editor.org/rfc/rfc9325", archive: "https://web.archive.org/web/20260414231540/https://www.rfc-editor.org/rfc/rfc9325"}
+    fpsot: {en: "HTTPS with TLS 1.2 or 1.3, no answer over plain HTTP, and HSTS of at least one year.", fr: "HTTPS avec TLS 1.2 ou 1.3, aucune réponse en HTTP simple, et HSTS d’au moins un an."}
+  - id: API-090
+    topic: authentication
+    requirement: {en: Callers use OAuth 2.0 bearer tokens., fr: Les appelants emploient des jetons porteurs OAuth 2.0.}
+    international: {en: "The OAuth 2.0 security best practice updates RFC 6749. It advises against the implicit grant, requires PKCE for public clients and recommends audience-restricted tokens.", fr: "La meilleure pratique de sécurité d’OAuth 2.0 met à jour le RFC 6749. Elle déconseille l’octroi implicite, exige PKCE pour les clients publics et recommande des jetons limités à une audience."}
+    international_source: {title: "RFC 9700, Best Current Practice for OAuth 2.0 Security", version: "RFC 9700", date: "2025-01", url: "https://www.rfc-editor.org/rfc/rfc9700", archive: "https://web.archive.org/web/20260516162557/https://www.rfc-editor.org/rfc/rfc9700"}
+    fpsot: {en: "OAuth 2.0 bearer tokens per RFC 9700, OpenID Connect for people, and a check of issuer, audience, expiry and signature.", fr: "Jetons porteurs OAuth 2.0 selon le RFC 9700, OpenID Connect pour les personnes, et vérification de l’émetteur, de l’audience, de l’expiration et de la signature."}
+  - id: API-094
+    topic: rate-limits
+    requirement: {en: Every API limits request rates., fr: Toute API limite le débit des requêtes.}
+    international: {en: "Status 429 tells a client it sent too many requests, and may carry Retry-After. Nothing requires a limit.", fr: "Le code 429 indique à un client qu’il a envoyé trop de requêtes, et peut porter Retry-After. Rien n’exige de limite."}
+    international_source: {title: "RFC 6585, Additional HTTP Status Codes", version: "RFC 6585", date: "2012-04", url: "https://www.rfc-editor.org/rfc/rfc6585", archive: "https://web.archive.org/web/20260520194549/https://www.rfc-editor.org/rfc/rfc6585"}
+    fpsot: {en: "A limit per client, 429 with Retry-After, limits stated in the description, and RateLimit headers recommended.", fr: "Une limite par client, 429 avec Retry-After, des limites indiquées dans la description, et les en-têtes RateLimit recommandés."}
+  - id: API-101
+    topic: events
+    requirement: {en: Events carry fixed CloudEvents attributes., fr: Les événements portent des attributs CloudEvents fixes.}
+    international: {en: "Only id, source, specversion and type are required. The time, subject, data content type and data schema are optional.", fr: "Seuls id, source, specversion et type sont obligatoires. L’heure, le sujet, le type de contenu et le schéma des données sont facultatifs."}
+    international_source: {title: "CloudEvents Specification", version: "1.0.2", date: "2022-02-06", url: "https://github.com/cloudevents/spec/blob/fc1f6f31f5f011a72183f1bcea20c987cb683ade/cloudevents/spec.md", archive: "https://github.com/cloudevents/spec/blob/fc1f6f31f5f011a72183f1bcea20c987cb683ade/cloudevents/spec.md"}
+    fpsot: {en: "CloudEvents 1.0.2 in JSON, with time and datacontenttype also required, and subject and dataschema recommended.", fr: "CloudEvents 1.0.2 en JSON, avec time et datacontenttype aussi obligatoires, et subject et dataschema recommandés."}

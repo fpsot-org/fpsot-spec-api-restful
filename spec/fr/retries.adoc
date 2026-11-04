@@ -1,0 +1,44 @@
+= Nouvelles tentatives
+include::_fpsot-terms.adoc[]
+
+Les réseaux tombent en panne, et un client ne peut souvent pas savoir si le serveur a reçu sa requête.
+Ces règles permettent à un client d’envoyer de nouveau la requête sans faire la modification deux fois.
+
+[[API-060]]
+*API-060.* Une {abbr-api-first} DOIT accepter un en-tête `Idempotency-Key` pour chaque opération `POST` et `PATCH`.
+L’en-tête suit draft-ietf-httpapi-idempotency-key-header-08, un projet Internet qui peut encore changer.
+La description DOIT indiquer quelles opérations exigent l’en-tête.
+Un `POST` qui crée un élément DEVRAIT l’exiger.
+`POST` et `PATCH` ne sont pas idempotentes par elles-mêmes.
+Une nouvelle tentative après une réponse perdue pourrait alors créer un second dossier ou facturer des frais deux fois.
+
+[[API-061]]
+*API-061.* Un client DOIT envoyer une nouvelle clé unique pour chaque requête distincte, comme un {abbr-uuid-first} aléatoire.
+Il DOIT envoyer la même clé, avec la même requête, quand il fait une nouvelle tentative.
+Le serveur distingue les nouvelles tentatives des nouvelles requêtes uniquement par la clé.
+
+[[API-062]]
+*API-062.* Un serveur DOIT garder chaque clé, une empreinte de sa requête et la réponse pendant au moins 24 heures.
+La description DOIT indiquer combien de temps le serveur garde les clés.
+Pendant ce temps, les règles suivantes s’appliquent.
+
+* Une nouvelle tentative avec la même clé et la même requête DOIT recevoir la réponse gardée.
+Elle NE DOIT PAS modifier quoi que ce soit.
+* Une requête avec une clé connue mais un autre corps DOIT recevoir `422 Unprocessable Content`, avec le type `idempotency-key-reused`.
+* Une requête dont la clé appartient à une requête encore en cours DOIT recevoir `409 Conflict`, avec le type `idempotency-key-in-use`.
+* Une clé manquante pour une opération qui l’exige DOIT recevoir `400 Bad Request`, avec le type `invalid-parameter`.
+
+Une journée couvre les nouvelles tentatives d’un client qui a perdu son réseau ou a redémarré pendant la nuit.
+
+[[API-063]]
+*API-063.* Un client DEVRAIT attendre plus longtemps avant chaque nouvelle tentative, avec une variation aléatoire.
+Il DOIT respecter un en-tête `Retry-After`.
+Des clients qui recommencent tout de suite et tous ensemble peuvent garder hors service un serveur qui se rétablit.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

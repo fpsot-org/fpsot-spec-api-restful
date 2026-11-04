@@ -1,16 +1,81 @@
-= Guide
-:translation-status: pending
-:page-type: explanation
+= Concevoir une API qui suit les règles
+:page-type: how-to
 include::_fpsot-terms.adoc[]
 
-Cette page explique la spécification aux personnes qui l’adoptent.
-Chaque page de guide a un seul type.
-C’est un tutoriel, un guide pratique, une référence ou une explication.
+Ce guide montre comment concevoir une nouvelle {abbr-api-first} pour une spécification de domaine de la {abbr-fpsot-first}.
+L’exemple est une petite {abbr-api} de permis.
+Chaque étape nomme les règles qu’elle respecte.
+
+== Nommer les ressources
+
+Choisissez les choses que gère l’{abbr-api}, et nommez chaque collection avec un nom au pluriel.
+Pour les permis, les chemins sont `/v1/permits` et `/v1/permits/{permitId}`.
+Consultez les exigences xref:../../../../spec/fr/resources.adoc#API-010[API-010] et xref:../../../../spec/fr/resources.adoc#API-011[API-011].
+
+== Écrire d’abord la description
+
+Créez un fichier `permits.openapi.yaml` dans le dossier `api/` de la spécification de domaine.
+Donnez à `openapi` la version que nomme l’exigence xref:../../../../spec/fr/openapi.adoc#API-020[API-020].
+Donnez à `info.version` la valeur `1.0.0`.
+Pour chaque opération, donnez un `operationId`, un résumé, une description et toutes les réponses.
+
+[source,yaml]
+----
+paths:
+  /v1/permits/{permitId}:
+    get:
+      operationId: getPermit
+      summary: Lire un permis
+      responses:
+        "200":
+          description: Le permis.
+          headers:
+            ETag: {schema: {type: string}}
+        "404":
+          $ref: "#/components/responses/NotFound"
+----
+
+== Renvoyer des pages d’éléments
+
+Les opérations de liste renvoient `items` et, quand il reste des éléments, `next`.
+Acceptez `pageSize`, des filtres qui portent le nom des champs, `sortBy` et `sortOrder`.
+Indiquez dans la description la taille de page par défaut et la plus grande taille.
+Consultez les exigences xref:../../../../spec/fr/collections.adoc#API-040[API-040] à xref:../../../../spec/fr/collections.adoc#API-048[API-048].
+
+== Protéger chaque modification
+
+Envoyez un `ETag` fort avec chaque permis.
+Exigez `If-Match` pour `PUT`, `PATCH` et `DELETE`, et `Idempotency-Key` pour `POST`.
+Un client qui fait une nouvelle tentative n’applique alors jamais deux fois la même modification.
+
+[source,http]
+----
+PATCH /v1/permits/01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23 HTTP/1.1
+Content-Type: application/merge-patch+json
+If-Match: "7f3a"
+Idempotency-Key: "8e0c2f4a-1b6d-4c3e-9a7f-5d2b1e0c9f88"
+
+{"status": "suspended"}
+----
+
+== Signaler les erreurs
+
+Répondez à chaque erreur avec un corps de détails de problème.
+Employez un type commun, comme `https://fpsot.org/problems/precondition-failed`, quand il convient.
+Définissez un type pour chaque problème du domaine, et rédigez son titre en anglais et en français.
+Consultez les exigences xref:../../../../spec/fr/errors.adoc#API-030[API-030] à xref:../../../../spec/fr/errors.adoc#API-037[API-037].
+
+== Vérifier avant de publier
+
+. Faites analyser la description par un outil d’analyse OpenAPI dans l’intégration continue.
+. Vérifiez que le serveur répond comme le dit la description.
+. Vérifiez les en-têtes de sécurité d’une vraie réponse avec `curl -sI`.
+. Confirmez que les requêtes en {abbr-http-first} simple ne reçoivent aucune réponse.
 
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
-|0.1.0 |2026-11-03 |Première version.
+|0.1.0 |2026-11-04 |Première version.
 |===

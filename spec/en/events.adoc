@@ -1,0 +1,77 @@
+= Events
+include::_fpsot-terms.adoc[]
+
+An event tells other systems that something happened, such as a new record or a changed status.
+Every {abbr-fpsot-first} event uses CloudEvents 1.0.2, so one consumer can read the events of every service.
+
+[[API-100]]
+*API-100.* An event MUST be a CloudEvents 1.0.2 event in the {abbr-json-first} event format, with the media type `application/cloudevents+json`.
+Over {abbr-http-first}, a producer MUST send it in the structured mode, with the whole event in the body.
+CloudEvents is a neutral standard that brokers, gateways and cloud services read.
+The structured mode keeps the event the same on every transport.
+
+[[API-101]]
+*API-101.* Every event MUST carry these attributes.
+
+[cols="1,3",options="header"]
+|===
+|Attribute |Value
+|`specversion` |`1.0`.
+|`id` |A new identifier for each event, in the form that the {abbr-fpsot} data types specification sets for new identifiers.
+|`source` |A {abbr-uri-first} reference that names the producer, such as `/v1/assets` on its {abbr-api-first} host.
+|`type` |The type of the event, in the form that the {abbr-fpsot} naming specification sets for event types.
+|`time` |The instant when the change happened, in the form that the data types specification sets for instants.
+|`datacontenttype` |`application/json`.
+|===
+
+The event SHOULD also carry `subject`, with the identifier of the item that changed.
+It SHOULD carry `dataschema`, with the {abbr-uri} of the {abbr-json} Schema of its data.
+CloudEvents leaves `time`, `subject` and `datacontenttype` optional.
+Required attributes let a consumer sort, route and check every event without reading its data.
+
+[[API-102]]
+*API-102.* The `data` of an event MUST follow the field rules of xref:resources.adoc[Resources].
+It SHOULD hold the state of the item after the change, or a link to it.
+It MUST NOT hold a secret, and SHOULD hold only the personal information that consumers need.
+Brokers copy events to many consumers and keep them for a long time.
+
+[[API-103]]
+*API-103.* A domain specification MUST list each event type it defines, with the {abbr-json} Schema of its data.
+A change to the data that would break a client, as xref:versions.adoc#API-051[API-051] defines, MUST use a new event type.
+Consumers then rely on each event type as they rely on a major version of an {abbr-api}.
+
+[[API-104]]
+*API-104.* A consumer MUST accept the same event more than once.
+It MUST treat two events with the same `source` and `id` as one event.
+A consumer MUST ignore an attribute or a field that it does not know.
+Brokers deliver each event at least once, so a duplicate is normal.
+A producer can then add an attribute or a field without breaking its consumers.
+
+== Example
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "01a19c93-e6c8-7d1e-9a3b-4c5d6e7f8a9b",
+  "source": "https://api.example.ca/v1/assets",
+  "type": "org.fpsot.registry.asset.created",
+  "subject": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
+  "time": "2026-11-02T14:05:00Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://api.example.ca/v1/schemas/asset",
+  "data": {
+    "id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
+    "status": "active",
+    "updatedAt": "2026-11-02T14:05:00Z"
+  }
+}
+----
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

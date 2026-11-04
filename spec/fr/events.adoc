@@ -1,0 +1,77 @@
+= Événements
+include::_fpsot-terms.adoc[]
+
+Un événement informe d’autres systèmes que quelque chose s’est produit, comme un nouveau dossier ou un changement d’état.
+Tout événement de la {abbr-fpsot-first} emploie CloudEvents 1.0.2, pour qu’un même consommateur lise les événements de chaque service.
+
+[[API-100]]
+*API-100.* Un événement DOIT être un événement CloudEvents 1.0.2 dans le format d’événement {abbr-json-first}, avec le type de média `application/cloudevents+json`.
+En {abbr-http-first}, un producteur DOIT l’envoyer en mode structuré, avec tout l’événement dans le corps.
+CloudEvents est une norme neutre que lisent les courtiers de messages, les passerelles et les services infonuagiques.
+Le mode structuré garde l’événement identique sur chaque transport.
+
+[[API-101]]
+*API-101.* Tout événement DOIT porter ces attributs.
+
+[cols="1,3",options="header"]
+|===
+|Attribut |Valeur
+|`specversion` |`1.0`.
+|`id` |Un nouvel identifiant pour chaque événement, sous la forme que fixe la spécification des types de données de la {abbr-fpsot} pour les nouveaux identifiants.
+|`source` |Une référence d’{abbr-uri-first} qui nomme le producteur, comme `/v1/assets` sur son hôte d’{abbr-api-first}.
+|`type` |Le type de l’événement, sous la forme que fixe la spécification de nommage de la {abbr-fpsot} pour les types d’événements.
+|`time` |L’instant où le changement s’est produit, sous la forme que fixe la spécification des types de données pour les instants.
+|`datacontenttype` |`application/json`.
+|===
+
+L’événement DEVRAIT aussi porter `subject`, avec l’identifiant de l’élément qui a changé.
+Il DEVRAIT porter `dataschema`, avec l’{abbr-uri} du schéma {abbr-json} Schema de ses données.
+CloudEvents laisse facultatifs `time`, `subject` et `datacontenttype`.
+Des attributs obligatoires permettent à un consommateur de trier, d’acheminer et de vérifier chaque événement sans lire ses données.
+
+[[API-102]]
+*API-102.* Les données `data` d’un événement DOIVENT suivre les règles de champs de la page xref:resources.adoc[Ressources].
+Elles DEVRAIENT contenir l’état de l’élément après le changement, ou un lien vers celui-ci.
+Elles NE DOIVENT PAS contenir de secret, et DEVRAIENT contenir seulement les renseignements personnels dont les consommateurs ont besoin.
+Les courtiers copient les événements vers de nombreux consommateurs et les gardent longtemps.
+
+[[API-103]]
+*API-103.* Une spécification de domaine DOIT énumérer chaque type d’événement qu’elle définit, avec le schéma {abbr-json} Schema de ses données.
+Un changement des données qui briserait un client, comme le définit l’exigence xref:versions.adoc#API-051[API-051], DOIT employer un nouveau type d’événement.
+Les consommateurs se fient alors à chaque type d’événement comme à une version majeure d’une {abbr-api}.
+
+[[API-104]]
+*API-104.* Un consommateur DOIT accepter plus d’une fois le même événement.
+Il DOIT traiter comme un seul deux événements de même `source` et de même `id`.
+Un consommateur DOIT ignorer un attribut ou un champ qu’il ne connaît pas.
+Les courtiers livrent chaque événement au moins une fois, donc un doublon est normal.
+Un producteur peut alors ajouter un attribut ou un champ sans briser ses consommateurs.
+
+== Exemple
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "01a19c93-e6c8-7d1e-9a3b-4c5d6e7f8a9b",
+  "source": "https://api.example.ca/v1/assets",
+  "type": "org.fpsot.registry.asset.created",
+  "subject": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
+  "time": "2026-11-02T14:05:00Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://api.example.ca/v1/schemas/asset",
+  "data": {
+    "id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
+    "status": "active",
+    "updatedAt": "2026-11-02T14:05:00Z"
+  }
+}
+----
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

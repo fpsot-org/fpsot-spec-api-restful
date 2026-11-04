@@ -1,0 +1,110 @@
+= Methods and status codes
+include::_fpsot-terms.adoc[]
+
+These rules apply the {abbr-http-first} semantics of {abbr-rfc-first} 9110 to every {abbr-api-first}.
+Clients, proxies and tools then read each request and response the same way.
+
+== Methods
+
+[[API-001]]
+*API-001.* An {abbr-api} MUST give each method the meaning that {abbr-rfc} 9110 defines.
+
+[cols="1,3",options="header"]
+|===
+|Method |Use
+|`GET` |Read a collection or an item.
+|`HEAD` |Read the headers of a `GET` response, without the body.
+|`POST` |Create an item in a collection, or start an action.
+|`PUT` |Replace an item with the representation in the request.
+|`PATCH` |Change some fields of an item.
+|`DELETE` |Remove an item.
+|`OPTIONS` |Answer a browser before a cross-origin request.
+|===
+
+Generic clients, caches and gateways rely on these meanings.
+A method used for something else breaks them in ways that are hard to find.
+
+[[API-002]]
+*API-002.* `GET`, `HEAD` and `OPTIONS` MUST NOT change the state of a resource.
+`PUT` and `DELETE` MUST be idempotent: the same request sent twice has the same effect as sent once.
+Clients, crawlers and prefetching browsers send safe requests without asking anyone.
+A client can repeat an idempotent request after a timeout without creating a second change.
+
+[[API-003]]
+*API-003.* A `PATCH` request MUST use the {abbr-json-first} Merge Patch format of {abbr-rfc} 7396, with the media type `application/merge-patch+json`.
+An {abbr-api} MAY also accept the {abbr-json} Patch format of {abbr-rfc} 6902.
+A merge patch looks like the resource itself, so it is easy to write and to read.
+One required format lets every client change every {abbr-api} the same way.
+
+== Status codes
+
+[[API-004]]
+*API-004.* An {abbr-api} MUST answer with the status code that fits the result, from this table.
+A domain specification MAY use another code that {abbr-rfc} 9110 defines, when none of these fits.
+
+[cols="1,3",options="header"]
+|===
+|Code |Use
+|`200 OK` |The request worked and the response has a body.
+|`201 Created` |`POST` created an item.
+|`202 Accepted` |The server accepted the request and will finish the work later.
+|`204 No Content` |The request worked and the response has no body.
+|`304 Not Modified` |The client's copy is still current.
+|`400 Bad Request` |The request is malformed, or a parameter is wrong.
+|`401 Unauthorized` |The request has no valid credentials.
+|`403 Forbidden` |The client is known, but may not do this.
+|`404 Not Found` |The resource does not exist, or the client may not know that it exists.
+|`405 Method Not Allowed` |The resource does not support this method.
+|`406 Not Acceptable` |The server cannot answer in any format the client accepts.
+|`409 Conflict` |The request conflicts with the current state of the resource.
+|`410 Gone` |The resource or the version was removed on purpose.
+|`412 Precondition Failed` |The resource changed since the client last read it.
+|`413 Content Too Large` |The request body is larger than the server accepts.
+|`415 Unsupported Media Type` |The server does not accept the format of the request body.
+|`422 Unprocessable Content` |The body is well formed, but its values break a rule.
+|`428 Precondition Required` |The request needs an `If-Match` header.
+|`429 Too Many Requests` |The client sent too many requests.
+|`500 Internal Server Error` |The server failed.
+|`503 Service Unavailable` |The server cannot answer for now.
+|===
+
+The status code is the first thing a client and a monitoring tool read.
+A short, shared list keeps every {abbr-api} predictable.
+
+[[API-005]]
+*API-005.* An {abbr-api} MUST NOT answer an error with a `2xx` status code.
+A client that checks only the status code would treat the error as a success.
+
+[[API-006]]
+*API-006.* A `201 Created` response MUST carry a `Location` header with the {abbr-url-first} of the new item.
+It SHOULD also carry the new item in its body.
+The client then knows where the item lives without a second search.
+
+[[API-007]]
+*API-007.* Work that takes more than a few seconds SHOULD answer `202 Accepted`.
+The response MUST then carry a `Location` header that points to an operation resource.
+The client reads the operation resource to learn the status and the result.
+Long requests time out in proxies and leave the client unsure of the result.
+
+== Conditional requests
+
+[[API-008]]
+*API-008.* Every item representation MUST carry a strong `ETag` header.
+A `GET` request with a matching `If-None-Match` header MUST get `304 Not Modified`.
+The entity tag changes whenever the item changes.
+Clients and caches then reuse a copy that is still current and save bandwidth.
+
+[[API-009]]
+*API-009.* A `PUT`, `PATCH` or `DELETE` request on an item MUST carry an `If-Match` header.
+Its value is the entity tag that the client last read.
+Without it, the server MUST answer `428 Precondition Required`.
+When the tag no longer matches, the server MUST answer `412 Precondition Failed` and MUST NOT change the item.
+Otherwise, two people who change the same record at once would lose one change without knowing it.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

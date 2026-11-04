@@ -1,0 +1,112 @@
+= Errors
+include::_fpsot-terms.adoc[]
+
+Every {abbr-api-first} reports a problem in the same format.
+That format is the problem details object of {abbr-rfc-first} 9457.
+
+[[API-030]]
+*API-030.* Every response with a `4xx` or `5xx` status code MUST carry a problem details body.
+Its media type MUST be `application/problem+json`.
+The server MUST send this format whatever the `Accept` header of the request says.
+One format lets a client and a gateway handle every error of every {abbr-api} with the same code.
+
+[[API-031]]
+*API-031.* The `type` member MUST be an absolute {abbr-https-first} {abbr-uri-first} that names one kind of problem.
+The {abbr-uri} MUST stay the same for as long as that kind of problem exists.
+It SHOULD lead to a page that explains the problem in English and in French.
+An {abbr-api} MUST NOT use `about:blank`.
+Clients branch on the `type`, so it works like a stable error code.
+The page tells a developer what went wrong and how to fix it.
+
+[[API-032]]
+*API-032.* An {abbr-api} MUST use a type from this table when it fits the problem.
+A domain specification MUST define its own types for the problems of its domain.
+It MUST publish them with the description.
+Each type in the table is a {abbr-uri} that starts with `https://fpsot.org/problems/`, followed by the name.
+
+[cols="2,1,3",options="header"]
+|===
+|Name |Status |Problem
+|`malformed-request` |400 |The body or the syntax of the request is invalid.
+|`invalid-parameter` |400 |A query parameter or a header has a wrong value, or is unknown.
+|`invalid-cursor` |400 |The page cursor is invalid or has expired.
+|`unauthenticated` |401 |The request has no valid credentials.
+|`forbidden` |403 |The client may not do this.
+|`not-found` |404 |The resource does not exist, or the client may not know that it exists.
+|`method-not-allowed` |405 |The resource does not support this method.
+|`not-acceptable` |406 |The server cannot answer in a format the client accepts.
+|`conflict` |409 |The request conflicts with the current state of the resource.
+|`idempotency-key-in-use` |409 |A request with the same idempotency key is still running.
+|`version-retired` |410 |The version of the {abbr-api} has reached its sunset date.
+|`precondition-failed` |412 |The resource changed since the client last read it.
+|`content-too-large` |413 |The request body is too large.
+|`unsupported-media-type` |415 |The server does not accept the format of the request body.
+|`validation-failed` |422 |One or more values in the body break a rule.
+|`idempotency-key-reused` |422 |The client already used the idempotency key for a different request.
+|`precondition-required` |428 |The request needs an `If-Match` header.
+|`rate-limited` |429 |The client sent too many requests.
+|`internal-error` |500 |The server failed.
+|`unavailable` |503 |The server cannot answer for now.
+|===
+
+Shared types spare each domain specification from defining the same problems again.
+A client then handles the common problems of every {abbr-api} with the same code.
+
+[[API-033]]
+*API-033.* The `title` MUST be a short summary that stays the same each time a type occurs, in one language.
+The `detail` member SHOULD explain this occurrence and say what the client can do next.
+Both MUST be in the language that the server picks for the response, as xref:languages.adoc[Formats and languages] sets.
+Each type MUST have a title in English and in French.
+People read these members, so the writing rules of WRT-040 apply to them.
+A fixed title per type lets a server take it from a translation file.
+
+[[API-034]]
+*API-034.* The `status` member MUST be present and MUST equal the status code of the response.
+A proxy can change the status code, and the body then still tells the truth.
+
+[[API-035]]
+*API-035.* The `instance` member SHOULD identify this occurrence with a {abbr-uri}, such as `urn:uuid:` followed by an identifier.
+The server SHOULD write the same identifier in its logs.
+Support staff can then find the logs of one failed request without any other detail.
+
+[[API-036]]
+*API-036.* A `validation-failed` or `invalid-parameter` problem MUST list each fault in an `errors` member.
+Each entry of `errors` MUST have a `detail` and MUST name the place of the fault.
+A fault in the body uses `pointer`, a {abbr-json-first} Pointer of {abbr-rfc} 6901 to the field.
+A fault in a query parameter or a header uses `parameter`, with its name.
+A form can then show each message next to the right field, and fix them all at once.
+
+[[API-037]]
+*API-037.* Extension members MUST follow the naming specification for field names.
+A problem details body MUST NOT reveal a stack trace, a database query, an internal host name or a secret.
+It MUST NOT reveal personal information about anyone other than the client.
+Error messages reach logs, screens and support tickets, where attackers and other people can read them.
+
+== Example
+
+[source,http]
+----
+HTTP/1.1 422 Unprocessable Content
+Content-Type: application/problem+json
+Content-Language: en
+
+{
+  "type": "https://fpsot.org/problems/validation-failed",
+  "title": "Some values are not valid.",
+  "status": 422,
+  "detail": "Fix the two fields below, then send the request again.",
+  "instance": "urn:uuid:01a1a0d9-f100-7c6e-8f12-3b4a5c6d7e8f",
+  "errors": [
+    {"pointer": "/name/fr", "detail": "Enter the name in French."},
+    {"pointer": "/fee/currency", "detail": "Use a currency code such as CAD."}
+  ]
+}
+----
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

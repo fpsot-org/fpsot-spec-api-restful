@@ -1,0 +1,51 @@
+= Formats and languages
+include::_fpsot-terms.adoc[]
+
+An {abbr-api-first} returns data, and some text that the server writes itself.
+These rules set the format of both, and the language of that text.
+
+== Media types
+
+[[API-070]]
+*API-070.* An {abbr-api} MUST accept and return {abbr-json-first}, as {abbr-rfc-first} 8259 defines, encoded in {abbr-utf-8-first}.
+The media type MUST be `application/json`, or a {abbr-json}-based type that this specification names, such as `application/problem+json`.
+An {abbr-api} MAY offer another format as well, such as a spreadsheet format for open data.
+Every programming language and tool reads this format.
+The {abbr-utf-8} encoding holds every letter of French and of Indigenous languages.
+
+[[API-071]]
+*API-071.* A server MUST answer `406 Not Acceptable` when it cannot meet the `Accept` header of a request.
+It MUST answer `415 Unsupported Media Type` when it does not accept the `Content-Type` of a request body.
+A clear refusal is better than a body in a format the client cannot read.
+
+== Bilingual data
+
+[[API-072]]
+*API-072.* A field that holds text in several languages MUST return every language that the item holds.
+The value MUST be an object keyed by language tag, such as `{"en": "Fishing licence", "fr": "Permis de pêche"}`.
+Its form comes from the {abbr-fpsot-first} data types specification.
+The `Accept-Language` header MUST NOT remove languages from such a field.
+The data is the record itself, and every client can then show it in either language.
+A cache can also share one response between readers of both languages.
+
+== Text that the server writes
+
+[[API-073]]
+*API-073.* A server MUST read the `Accept-Language` header to choose the language of the text it writes.
+This text includes problem `title` and `detail` members and other messages.
+The server MUST support English and French.
+When it supports none of the requested languages, it MUST fall back as the {abbr-fpsot} internationalization specification sets.
+Each person then reads messages in the official language they chose.
+
+[[API-074]]
+*API-074.* A response that contains text the server wrote MUST carry a `Content-Language` header with the language it used.
+When the language depends on the request, the response MUST also carry `Vary: Accept-Language`.
+A cache then never serves a French message to a client that asked for English.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

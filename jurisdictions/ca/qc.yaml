@@ -1,0 +1,13 @@
+code: CA-QC
+name: {en: Québec, fr: Québec}
+rows:
+  - id: API-080
+    text: {en: "HTTPS and TLS 1.2 are standards to retain for secure exchanges. The framework is a recommended practice, not a binding rule.", fr: "HTTPS et TLS 1.2 sont des standards « À retenir » pour les échanges sécurisés. Le cadre est une pratique recommandée, non obligatoire."}
+    status: looser
+    source: {title: "Cadre commun d’interopérabilité du gouvernement du Québec", version: "AEG 3.2", date: "2017-06", url: "https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/cybersecurite_numerique/Publications/AEG/Cadre_commun_interoperabilite.pdf", archive: "https://web.archive.org/web/20240924132115/https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/cybersecurite_numerique/Publications/AEG/Cadre_commun_interoperabilite.pdf"}
+    last_checked: "2026-11-04"
+  - id: API-090
+    text: {en: "OAuth 2.0 and OpenID Connect 1.0 are only standards to consider. Nothing requires them.", fr: "OAuth 2.0 et OpenID Connect 1.0 sont seulement des standards « À considérer ». Rien ne les exige."}
+    status: looser
+    source: {title: "Cadre commun d’interopérabilité du gouvernement du Québec", version: "AEG 3.2", date: "2017-06", url: "https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/cybersecurite_numerique/Publications/AEG/Cadre_commun_interoperabilite.pdf", archive: "https://web.archive.org/web/20240924132115/https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/cybersecurite_numerique/Publications/AEG/Cadre_commun_interoperabilite.pdf"}
+    last_checked: "2026-11-04"

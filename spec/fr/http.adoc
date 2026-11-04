@@ -1,0 +1,110 @@
+= Méthodes et codes d’état
+include::_fpsot-terms.adoc[]
+
+Ces règles appliquent à toute {abbr-api-first} la sémantique {abbr-http-first} du {abbr-rfc-first} 9110.
+Les clients, les mandataires et les outils lisent alors chaque requête et chaque réponse de la même façon.
+
+== Méthodes
+
+[[API-001]]
+*API-001.* Une {abbr-api} DOIT donner à chaque méthode le sens que définit le {abbr-rfc} 9110.
+
+[cols="1,3",options="header"]
+|===
+|Méthode |Emploi
+|`GET` |Lire une collection ou un élément.
+|`HEAD` |Lire les en-têtes d’une réponse à `GET`, sans le corps.
+|`POST` |Créer un élément dans une collection, ou lancer une action.
+|`PUT` |Remplacer un élément par la représentation de la requête.
+|`PATCH` |Modifier certains champs d’un élément.
+|`DELETE` |Supprimer un élément.
+|`OPTIONS` |Répondre à un navigateur avant une requête d’une autre origine.
+|===
+
+Les clients génériques, les caches et les passerelles se fient à ces sens.
+Une méthode employée à une autre fin les brise de façons difficiles à trouver.
+
+[[API-002]]
+*API-002.* `GET`, `HEAD` et `OPTIONS` NE DOIVENT PAS changer l’état d’une ressource.
+`PUT` et `DELETE` DOIVENT être idempotentes : la même requête envoyée deux fois a le même effet qu’une seule.
+Les clients, les robots d’indexation et les navigateurs envoient des requêtes sûres sans rien demander à personne.
+Après un délai expiré, un client peut répéter une requête idempotente sans créer une seconde modification.
+
+[[API-003]]
+*API-003.* Une requête `PATCH` DOIT employer le format {abbr-json-first} Merge Patch du {abbr-rfc} 7396, avec le type de média `application/merge-patch+json`.
+Une {abbr-api} PEUT aussi accepter le format {abbr-json} Patch du {abbr-rfc} 6902.
+Un correctif de fusion ressemble à la ressource elle-même, il est donc facile à écrire et à lire.
+Un seul format obligatoire permet à tout client de modifier toute {abbr-api} de la même façon.
+
+== Codes d’état
+
+[[API-004]]
+*API-004.* Une {abbr-api} DOIT répondre avec le code d’état qui correspond au résultat, selon ce tableau.
+Une spécification de domaine PEUT employer un autre code défini par le {abbr-rfc} 9110 quand aucun de ceux-ci ne convient.
+
+[cols="1,3",options="header"]
+|===
+|Code |Emploi
+|`200 OK` |La requête a réussi et la réponse a un corps.
+|`201 Created` |`POST` a créé un élément.
+|`202 Accepted` |Le serveur a accepté la requête et terminera le travail plus tard.
+|`204 No Content` |La requête a réussi et la réponse n’a pas de corps.
+|`304 Not Modified` |La copie du client est encore à jour.
+|`400 Bad Request` |La requête est mal formée, ou un paramètre est erroné.
+|`401 Unauthorized` |La requête n’a pas d’authentifiants valides.
+|`403 Forbidden` |Le client est connu, mais il n’a pas le droit de faire cette action.
+|`404 Not Found` |La ressource n’existe pas, ou le client n’a pas le droit de savoir qu’elle existe.
+|`405 Method Not Allowed` |La ressource n’accepte pas cette méthode.
+|`406 Not Acceptable` |Le serveur ne peut répondre dans aucun format qu’accepte le client.
+|`409 Conflict` |La requête contredit l’état actuel de la ressource.
+|`410 Gone` |La ressource ou la version a été retirée volontairement.
+|`412 Precondition Failed` |La ressource a changé depuis la dernière lecture du client.
+|`413 Content Too Large` |Le corps de la requête dépasse la taille que le serveur accepte.
+|`415 Unsupported Media Type` |Le serveur n’accepte pas le format du corps de la requête.
+|`422 Unprocessable Content` |Le corps est bien formé, mais ses valeurs enfreignent une règle.
+|`428 Precondition Required` |La requête exige un en-tête `If-Match`.
+|`429 Too Many Requests` |Le client a envoyé trop de requêtes.
+|`500 Internal Server Error` |Le serveur a échoué.
+|`503 Service Unavailable` |Le serveur ne peut pas répondre pour le moment.
+|===
+
+Le code d’état est la première chose que lisent un client et un outil de surveillance.
+Une liste courte et commune rend chaque {abbr-api} prévisible.
+
+[[API-005]]
+*API-005.* Une {abbr-api} NE DOIT PAS répondre à une erreur avec un code d’état `2xx`.
+Un client qui ne vérifie que le code d’état prendrait l’erreur pour un succès.
+
+[[API-006]]
+*API-006.* Une réponse `201 Created` DOIT porter un en-tête `Location` avec l’{abbr-url-first} du nouvel élément.
+Elle DEVRAIT aussi porter le nouvel élément dans son corps.
+Le client sait alors où se trouve l’élément sans faire une seconde recherche.
+
+[[API-007]]
+*API-007.* Un travail qui dure plus de quelques secondes DEVRAIT recevoir la réponse `202 Accepted`.
+La réponse DOIT alors porter un en-tête `Location` qui pointe vers une ressource d’opération.
+Le client lit la ressource d’opération pour connaître l’état et le résultat.
+Les longues requêtes expirent dans les mandataires et laissent le client incertain du résultat.
+
+== Requêtes conditionnelles
+
+[[API-008]]
+*API-008.* Toute représentation d’un élément DOIT porter un en-tête `ETag` fort.
+Une requête `GET` avec un en-tête `If-None-Match` qui correspond DOIT recevoir `304 Not Modified`.
+L’étiquette d’entité change chaque fois que l’élément change.
+Les clients et les caches réutilisent alors une copie encore à jour et économisent de la bande passante.
+
+[[API-009]]
+*API-009.* Une requête `PUT`, `PATCH` ou `DELETE` sur un élément DOIT porter un en-tête `If-Match`.
+Sa valeur est l’étiquette d’entité que le client a lue en dernier.
+Sans cet en-tête, le serveur DOIT répondre `428 Precondition Required`.
+Quand l’étiquette ne correspond plus, le serveur DOIT répondre `412 Precondition Failed` et NE DOIT PAS modifier l’élément.
+Sinon, deux personnes qui modifient le même dossier en même temps perdraient une modification sans le savoir.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===

@@ -1,0 +1,57 @@
+= Descriptions
+include::_fpsot-terms.adoc[]
+
+Every {abbr-api-first} has a description that people and tools read.
+The description is the contract between the server and its clients.
+
+[[API-020]]
+*API-020.* Every {abbr-api} MUST have a description in the OpenAPI Specification, version 3.1.2 or a later 3.1 patch release.
+The description MUST cover each operation that the {abbr-api} offers, with its parameters, headers, request body and responses.
+OpenAPI is the shared format of {abbr-api} tools.
+With one complete description, anyone can generate a client, a test or a documentation page.
+
+[[API-021]]
+*API-021.* A domain specification MUST publish the description of each {abbr-api} it defines, with its normative text.
+That published description is normative.
+A server MUST conform to it, and its continuous integration SHOULD test that it does.
+A description generated from code MAY help, but the server MUST NOT contradict the published one.
+Buyers and other teams build against the published contract, not against one server.
+
+[[API-022]]
+*API-022.* A running server MUST serve the description of each major version at `/v<major>/openapi`, as {abbr-json-first}.
+A client and a gateway can then find the description without asking anyone.
+
+[[API-023]]
+*API-023.* Schemas MUST use {abbr-json} Schema draft 2020-12, the default dialect of OpenAPI 3.1.
+They MUST NOT use the `nullable` keyword of OpenAPI 3.0.
+A schema in a standard dialect works with any {abbr-json} Schema validator, inside or outside OpenAPI.
+
+[[API-024]]
+*API-024.* Every operation MUST have a unique `operationId`, a summary and a description.
+The `operationId` MUST take the form of a field name.
+Code generators turn the `operationId` into a function name.
+The summary and the description tell a developer what the operation is for.
+
+[[API-025]]
+*API-025.* Every operation MUST list each status code it can return.
+Each error response MUST reference the problem details schema of xref:errors.adoc[Errors].
+Each request and each success response SHOULD have an example.
+A client can then handle every result that the server can send.
+
+[[API-026]]
+*API-026.* The description SHOULD give its summaries and descriptions in English and in French.
+It MAY do so with one file per language, which differ only in their text.
+OpenAPI has no field for a second language.
+Public bodies in Canada must serve both official language communities.
+
+[[API-027]]
+*API-027.* Continuous integration SHOULD check each description with an OpenAPI linter.
+The linter catches a missing field or a broken reference before a client finds it.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

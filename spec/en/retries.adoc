@@ -1,0 +1,42 @@
+= Retries
+include::_fpsot-terms.adoc[]
+
+Networks fail, and a client often cannot tell whether the server received its request.
+These rules let a client send the request again without making the change twice.
+
+[[API-060]]
+*API-060.* An {abbr-api-first} MUST accept an `Idempotency-Key` header on every `POST` and `PATCH` operation.
+The header follows draft-ietf-httpapi-idempotency-key-header-08, an Internet-Draft that can still change.
+The description MUST say which operations require the header.
+A `POST` that creates an item SHOULD require it.
+`POST` and `PATCH` are not idempotent by themselves.
+A retry after a lost response could then create a second record or apply a fee twice.
+
+[[API-061]]
+*API-061.* A client MUST send a new, unique key for each distinct request, such as a random {abbr-uuid-first}.
+It MUST send the same key, with the same request, when it retries.
+The server tells retries apart from new requests only through the key.
+
+[[API-062]]
+*API-062.* A server MUST keep each key, a fingerprint of its request and the response for at least 24 hours.
+The description MUST state how long the server keeps keys.
+Within that time, these rules apply.
+
+* A retry with the same key and the same request MUST get the stored response, and MUST NOT change anything.
+* A request with a known key but a different request body MUST get `422 Unprocessable Content`, with the `idempotency-key-reused` type.
+* A request whose key belongs to a request still in progress MUST get `409 Conflict`, with the `idempotency-key-in-use` type.
+* A missing key on an operation that requires one MUST get `400 Bad Request`, with the `invalid-parameter` type.
+
+A day covers the retries of a client that lost its network or restarted overnight.
+
+[[API-063]]
+*API-063.* A client SHOULD wait longer before each retry, with random variation, and MUST respect a `Retry-After` header.
+Clients that retry at once and all together can keep a recovering server down.
+
+== Document history
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Change
+|0.1.0 |2026-11-04 |First version.
+|===

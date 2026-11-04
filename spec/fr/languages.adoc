@@ -1,0 +1,51 @@
+= Formats et langues
+include::_fpsot-terms.adoc[]
+
+Une {abbr-api-first} renvoie des données, et certains textes que le serveur rédige lui-même.
+Ces règles fixent le format des deux, et la langue de ces textes.
+
+== Types de médias
+
+[[API-070]]
+*API-070.* Une {abbr-api} DOIT accepter et renvoyer du {abbr-json-first}, comme le définit le {abbr-rfc-first} 8259, encodé en {abbr-utf-8-first}.
+Le type de média DOIT être `application/json`, ou un type fondé sur {abbr-json} que nomme cette spécification, comme `application/problem+json`.
+Une {abbr-api} PEUT aussi offrir un autre format, comme un format de tableur pour les données ouvertes.
+Tous les langages de programmation et tous les outils lisent ce format.
+Le codage {abbr-utf-8} contient chaque lettre du français et des langues autochtones.
+
+[[API-071]]
+*API-071.* Un serveur DOIT répondre `406 Not Acceptable` quand il ne peut pas satisfaire l’en-tête `Accept` d’une requête.
+Il DOIT répondre `415 Unsupported Media Type` quand il n’accepte pas le `Content-Type` du corps d’une requête.
+Un refus clair vaut mieux qu’un corps dans un format que le client ne peut pas lire.
+
+== Données bilingues
+
+[[API-072]]
+*API-072.* Un champ qui contient du texte en plusieurs langues DOIT renvoyer toutes les langues que contient l’élément.
+La valeur DOIT être un objet dont les clés sont des étiquettes de langue.
+La spécification des types de données de la {abbr-fpsot-first} fixe cette forme, par exemple `{"en": "Fishing licence", "fr": "Permis de pêche"}`.
+L’en-tête `Accept-Language` NE DOIT PAS retirer de langues d’un tel champ.
+Les données sont le dossier lui-même, et chaque client peut alors les afficher dans l’une ou l’autre langue.
+Un cache peut aussi partager une même réponse entre les personnes qui lisent l’une ou l’autre langue.
+
+== Textes que rédige le serveur
+
+[[API-073]]
+*API-073.* Un serveur DOIT lire l’en-tête `Accept-Language` pour choisir la langue des textes qu’il rédige.
+Ces textes comprennent les membres `title` et `detail` des problèmes et les autres messages.
+Le serveur DOIT prendre en charge l’anglais et le français.
+Sans aucune des langues demandées, il DOIT se replier selon la spécification d’internationalisation de la {abbr-fpsot}.
+Chaque personne lit alors les messages dans la langue officielle qu’elle a choisie.
+
+[[API-074]]
+*API-074.* Une réponse qui contient du texte rédigé par le serveur DOIT porter un en-tête `Content-Language` avec la langue employée.
+Quand la langue dépend de la requête, la réponse DOIT aussi porter `Vary: Accept-Language`.
+Un cache ne sert alors jamais un message en français à un client qui a demandé l’anglais.
+
+== Historique du document
+
+[cols="1,1,4",options="header"]
+|===
+|Version |Date |Changement
+|0.1.0 |2026-11-04 |Première version.
+|===
