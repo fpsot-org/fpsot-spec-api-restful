@@ -40,7 +40,8 @@ Counting a large collection is slow and the count changes while the client reads
 [[API-044]]
 *API-044.* A filter on a field MUST use a query parameter with the name of that field, such as `status=active`.
 A filter on a range MUST add `From` or `To` to the field name, such as `createdAtFrom`.
-`From` includes the bound and `To` excludes it.
+The {abbr-fpsot-first} naming specification allows these suffixes, and `From` includes the bound while `To` excludes it.
+A filter on personal information MUST instead follow <<API-049,API-049>>.
 The description MUST list every filter that an operation accepts.
 Clients then build a filter from the schema they already know.
 
@@ -52,6 +53,7 @@ A server that ignores a misspelt filter returns the wrong items, and the client 
 [[API-046]]
 *API-046.* A free-text search SHOULD use the `search` query parameter.
 The description MUST say which fields the search reads.
+A search on personal information MUST instead follow <<API-049,API-049>>.
 One parameter name lets a user interface offer the same search box for every collection.
 
 == Sorting
@@ -59,7 +61,7 @@ One parameter name lets a user interface offer the same search box for every col
 [[API-047]]
 *API-047.* A client MAY ask for an order with the `sortBy` query parameter.
 Its value is a field name, or several field names separated by commas.
-The `sortOrder` query parameter MAY then be `asc` or `desc`, with `asc` as the default.
+The `sortOrder` query parameter MAY then be `ascending` or `descending`, with `ascending` as the default.
 The description MUST list the fields that each operation can sort by.
 A shared form lets every client sort every collection the same way.
 
@@ -69,23 +71,33 @@ Every order MUST end with the `id` field, so that two items never tie.
 A stable order is the condition for a cursor to work.
 Without it, an item can appear on two pages or on none.
 
+== Searches on personal information
+
+[[API-049]]
+*API-049.* A search or a filter on personal information MUST use `POST` on the `searches` sub-resource of the collection.
+Personal information includes the names, birth dates and identifiers of people.
+The criteria MUST go in a {abbr-json} body, as in `POST /v1/parties/searches`.
+The response MUST be a page in the format of <<API-042,API-042>>, and its cursor MUST NOT hold the criteria.
+Servers and proxies write addresses into logs, but not bodies.
+The criteria then stay out of the logs, as xref:security.adoc#API-085[API-085] requires.
+
 == Example
 
 [source,http]
 ----
-GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=desc&pageSize=2 HTTP/1.1
+GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=descending&pageSize=2 HTTP/1.1
 Accept: application/json
 
 HTTP/1.1 200 OK
 Content-Type: application/json
-Link: <https://api.example.ca/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
+Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
 
 {
   "items": [
     {"id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23", "status": "active", "updatedAt": "2026-11-02T14:05:00Z"},
     {"id": "01a19671-c1c0-7f00-8c11-2d3e4f5a6b7c", "status": "active", "updatedAt": "2026-11-01T09:30:00Z"}
   ],
-  "next": "https://api.example.ca/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
+  "next": "https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
 }
 ----
 

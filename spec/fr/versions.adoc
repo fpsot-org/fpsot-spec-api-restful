@@ -48,10 +48,10 @@ Ce lien mène à une page qui explique le changement.
 Un client apprend par son propre trafic que l’opération est déconseillée, sans lire aucun avis.
 
 [[API-055]]
-*API-055.* Dès qu’un serveur connaît la date de retrait, il DOIT envoyer un en-tête `Sunset` avec cette date.
-L’en-tête suit le {abbr-rfc} 8594.
+*API-055.* Dès qu’un serveur connaît la date de retrait, il DOIT l’envoyer dans un en-tête `Sunset` du {abbr-rfc} 8594.
 La date de retrait DOIT tomber au moins 12 mois après le premier en-tête `Deprecation`.
 La version majeure précédente DOIT rester disponible jusqu’à cette date.
+Un retrait DOIT enlever une opération seulement dans une nouvelle version majeure, comme l’exige <<API-051,API-051>>.
 Les organismes publics planifient et financent leurs changements un an à l’avance.
 Un préavis plus court forcerait un client à changer avant d’en avoir le budget.
 

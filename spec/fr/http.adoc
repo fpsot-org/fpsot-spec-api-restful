@@ -41,6 +41,7 @@ Un seul format obligatoire permet à tout client de modifier toute {abbr-api} de
 [[API-004]]
 *API-004.* Une {abbr-api} DOIT répondre avec le code d’état qui correspond au résultat, selon ce tableau.
 Une spécification de domaine PEUT employer un autre code défini par le {abbr-rfc} 9110 quand aucun de ceux-ci ne convient.
+Les codes `428` et `429` viennent du {abbr-rfc} 6585, et les autres du {abbr-rfc} 9110.
 
 [cols="1,3",options="header"]
 |===

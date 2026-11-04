@@ -26,6 +26,7 @@ paths:
     get:
       operationId: getPermit
       summary: Read a permit
+      description: Returns one permit with its current status and its entity tag.
       responses:
         "200":
           description: The permit.
@@ -70,7 +71,7 @@ See xref:../../../../spec/en/errors.adoc#API-030[API-030] to xref:../../../../sp
 . Run an OpenAPI linter on the description in continuous integration.
 . Test that the server answers as the description says.
 . Check the security headers of a real response with `curl -sI`.
-. Confirm that plain {abbr-http-first} requests get no answer.
+. Confirm that plain {abbr-http-first} requests get no content. They get no answer, or a permanent redirect where a binding rule requires one.
 
 == Document history
 

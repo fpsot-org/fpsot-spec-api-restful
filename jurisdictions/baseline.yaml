@@ -57,16 +57,16 @@ rows:
     fpsot: {en: "Accepted on every POST and PATCH, keys kept at least 24 hours, with the answers of the draft.", fr: "Accepté pour tout POST et tout PATCH, clés gardées au moins 24 heures, avec les réponses du projet."}
   - id: API-072
     topic: languages
-    requirement: {en: Bilingual fields return every language., fr: Les champs bilingues renvoient toutes les langues.}
+    requirement: {en: "Bilingual fields return every language by default.", fr: "Par défaut, les champs bilingues renvoient toutes les langues."}
     international: {en: "A client may list its preferred languages in Accept-Language. The server may use them to pick a representation.", fr: "Un client peut énumérer ses langues préférées dans Accept-Language. Le serveur peut s’en servir pour choisir une représentation."}
     international_source: {title: "RFC 9110, HTTP Semantics", version: "RFC 9110", date: "2022-06", url: "https://www.rfc-editor.org/rfc/rfc9110", archive: "https://web.archive.org/web/20260520194626/https://www.rfc-editor.org/rfc/rfc9110"}
-    fpsot: {en: "Language maps always hold every language. Accept-Language chooses only the language of text the server writes.", fr: "Les objets de langues contiennent toujours toutes les langues. Accept-Language ne choisit que la langue des textes que rédige le serveur."}
+    fpsot: {en: "Language maps hold every language by default. Where a jurisdiction rule requires it, Accept-Language may narrow them, with Content-Language and Vary.", fr: "Par défaut, les objets de langues contiennent toutes les langues. Quand une règle d’une administration l’exige, Accept-Language peut les restreindre, avec Content-Language et Vary."}
   - id: API-080
     topic: transport-security
-    requirement: {en: "HTTPS only, with no plain HTTP answer.", fr: "HTTPS seulement, sans réponse en HTTP simple."}
+    requirement: {en: "HTTPS only, with no content over plain HTTP.", fr: "HTTPS seulement, sans contenu en HTTP simple."}
     international: {en: "TLS 1.0 and 1.1 must not be negotiated, TLS 1.2 must be supported and TLS 1.3 should be. HSTS is a separate, optional header.", fr: "TLS 1.0 et 1.1 ne doivent pas être négociés, TLS 1.2 doit être pris en charge et TLS 1.3 devrait l’être. HSTS est un en-tête distinct et facultatif."}
     international_source: {title: "RFC 9325, Recommendations for Secure Use of TLS and DTLS (BCP 195)", version: "RFC 9325", date: "2022-11", url: "https://www.rfc-editor.org/rfc/rfc9325", archive: "https://web.archive.org/web/20260414231540/https://www.rfc-editor.org/rfc/rfc9325"}
-    fpsot: {en: "HTTPS with TLS 1.2 or 1.3, no answer over plain HTTP, and HSTS of at least one year.", fr: "HTTPS avec TLS 1.2 ou 1.3, aucune réponse en HTTP simple, et HSTS d’au moins un an."}
+    fpsot: {en: "HTTPS with TLS 1.2 or 1.3, and HSTS of at least one year. No content over plain HTTP, and a permanent redirect only where a binding rule requires one.", fr: "HTTPS avec TLS 1.2 ou 1.3, et HSTS d’au moins un an. Aucun contenu en HTTP simple, et une redirection permanente seulement quand une règle obligatoire l’exige."}
   - id: API-090
     topic: authentication
     requirement: {en: Callers use OAuth 2.0 bearer tokens., fr: Les appelants emploient des jetons porteurs OAuth 2.0.}

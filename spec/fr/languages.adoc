@@ -21,21 +21,27 @@ Un refus clair vaut mieux qu’un corps dans un format que le client ne peut pas
 == Données bilingues
 
 [[API-072]]
-*API-072.* Un champ qui contient du texte en plusieurs langues DOIT renvoyer toutes les langues que contient l’élément.
+*API-072.* Par défaut, un champ qui contient du texte en plusieurs langues DOIT renvoyer toutes les langues que contient l’élément.
 La valeur DOIT être un objet dont les clés sont des étiquettes de langue.
 La spécification des types de données de la {abbr-fpsot-first} fixe cette forme, par exemple `{"en": "Fishing licence", "fr": "Permis de pêche"}`.
-L’en-tête `Accept-Language` NE DOIT PAS retirer de langues d’un tel champ.
 Les données sont le dossier lui-même, et chaque client peut alors les afficher dans l’une ou l’autre langue.
 Un cache peut aussi partager une même réponse entre les personnes qui lisent l’une ou l’autre langue.
+
+Certaines règles d’une administration exigent une réponse dans la langue que demande le client.
+La section 6 des normes fédérales du Canada sur la conception d’{abbr-api} est une telle règle.
+Quand une telle règle s’applique, le serveur PEUT renvoyer seulement les langues que demande `Accept-Language`.
+Il DOIT alors envoyer un en-tête `Content-Language` et `Vary: Accept-Language`.
+Ces en-têtes séparent chaque copie en cache.
 
 == Textes que rédige le serveur
 
 [[API-073]]
-*API-073.* Un serveur DOIT lire l’en-tête `Accept-Language` pour choisir la langue des textes qu’il rédige.
+*API-073.* Un serveur DOIT choisir la langue des textes qu’il rédige dans l’ordre suivant.
+Il prend d’abord une langue enregistrée dans le profil de la personne authentifiée.
+Viennent ensuite `Accept-Language`, puis la langue par défaut du déploiement, selon la spécification d’internationalisation de la {abbr-fpsot}.
 Ces textes comprennent les membres `title` et `detail` des problèmes et les autres messages.
 Le serveur DOIT prendre en charge l’anglais et le français.
-Sans aucune des langues demandées, il DOIT se replier selon la spécification d’internationalisation de la {abbr-fpsot}.
-Chaque personne lit alors les messages dans la langue officielle qu’elle a choisie.
+Chaque personne lit alors les messages dans la langue officielle de son choix, même sur un appareil réglé autrement.
 
 [[API-074]]
 *API-074.* Une réponse qui contient du texte rédigé par le serveur DOIT porter un en-tête `Content-Language` avec la langue employée.

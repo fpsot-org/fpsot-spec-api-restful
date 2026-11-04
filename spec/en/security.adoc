@@ -8,11 +8,17 @@ The {abbr-owasp-first} {abbr-api} Security Top 10 of 2023 lists the risks they a
 == Transport
 
 [[API-080]]
-*API-080.* An {abbr-api} MUST accept requests only over {abbr-https-first}, with {abbr-tls-first} 1.2 or 1.3.
-It MUST NOT answer a request over plain {abbr-http-first}, not even with a redirect.
+*API-080.* An {abbr-api} MUST serve content and accept requests only over {abbr-https-first}, with {abbr-tls-first} 1.2 or 1.3.
+It MUST NOT serve content or accept a request over plain {abbr-http-first}.
 A server SHOULD offer {abbr-tls} 1.3 and MUST follow {abbr-rfc-first} 9325 and the documents that update it.
-A redirect comes too late, because the client has already sent its token in clear text.
-A client that fails at once learns to use the right address.
+Over plain {abbr-http}, anyone on the network can read or change the exchange.
+
+A server SHOULD NOT answer plain {abbr-http} at all.
+Some binding rules require a redirect, such as the federal configuration requirements for web sites in Canada.
+Where such a rule applies, the server MAY answer with a permanent redirect to the {abbr-https} address.
+That redirect MUST use status `301` or `308`, and MUST NOT carry any content.
+A redirect comes too late to protect the first request, because the client has already sent it in clear text.
+A client that gets no answer learns at once to use the right address.
 
 [[API-081]]
 *API-081.* Every response MUST carry a `Strict-Transport-Security` header with `includeSubDomains`.
@@ -68,9 +74,11 @@ This specification does not define how to sign in or how to issue tokens.
 OAuth 2.0 and OpenID Connect are the shared standards of public identity services.
 
 [[API-091]]
-*API-091.* An {abbr-api} MUST NOT accept a password, a token or an {abbr-api} key in a query parameter.
-An {abbr-api} key alone MUST NOT give access to non-public data.
-A key in an address leaks into logs, and a key without a person behind it cannot prove who acted.
+*API-091.* A server MUST NOT accept a secret in a query parameter.
+This covers passwords, tokens and {abbr-api} keys.
+A server MUST NOT give access to non-public data on the strength of an {abbr-api} key alone.
+A key in an address leaks into logs.
+A key without a person behind it cannot prove who acted.
 
 [[API-092]]
 *API-092.* A server MUST check, on every request, that the caller may act on the item that the request names.
@@ -92,8 +100,10 @@ A limit protects the service from a faulty client and from a flood of requests.
 It also keeps the cost of a public service under control.
 
 [[API-095]]
-*API-095.* A server SHOULD tell the client its quota with the `RateLimit-Policy` and `RateLimit` headers of draft-ietf-httpapi-ratelimit-headers-11.
-That Internet-Draft can still change, so the rule is only a recommendation.
+*API-095.* A server SHOULD tell the client its quota with the `RateLimit-Policy` and `RateLimit` headers.
+These headers come from the latest version of the Internet-Draft draft-ietf-httpapi-ratelimit-headers.
+Each version of a draft expires after six months, and the next version can change the headers.
+The rule stays a recommendation until the draft becomes an {abbr-rfc}.
 A client then slows down before it reaches the limit.
 
 == Inventory

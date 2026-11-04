@@ -26,6 +26,7 @@ paths:
     get:
       operationId: getPermit
       summary: Lire un permis
+      description: Renvoie un permis avec son statut actuel et son étiquette d’entité.
       responses:
         "200":
           description: Le permis.
@@ -70,7 +71,7 @@ Consultez les exigences xref:../../../../spec/fr/errors.adoc#API-030[API-030] à
 . Faites analyser la description par un outil d’analyse OpenAPI dans l’intégration continue.
 . Vérifiez que le serveur répond comme le dit la description.
 . Vérifiez les en-têtes de sécurité d’une vraie réponse avec `curl -sI`.
-. Confirmez que les requêtes en {abbr-http-first} simple ne reçoivent aucune réponse.
+. Confirmez que les requêtes en {abbr-http-first} simple ne reçoivent aucun contenu. Elles ne reçoivent aucune réponse, ou une redirection permanente quand une règle obligatoire l’exige.
 
 == Historique du document
 

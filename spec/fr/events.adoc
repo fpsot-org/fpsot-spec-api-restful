@@ -54,12 +54,12 @@ Un producteur peut alors ajouter un attribut ou un champ sans briser ses consomm
 {
   "specversion": "1.0",
   "id": "01a19c93-e6c8-7d1e-9a3b-4c5d6e7f8a9b",
-  "source": "https://api.example.ca/v1/assets",
+  "source": "https://api.example.com/v1/assets",
   "type": "org.fpsot.registry.asset.created",
   "subject": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
   "time": "2026-11-02T14:05:00Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://api.example.ca/v1/schemas/asset",
+  "dataschema": "https://api.example.com/v1/schemas/01a19c90-0b2c-7a4d-8e5f-6a7b8c9d0e1f",
   "data": {
     "id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23",
     "status": "active",
@@ -67,6 +67,8 @@ Un producteur peut alors ajouter un attribut ou un champ sans briser ses consomm
   }
 }
 ----
+
+Le schéma est un élément de la collection `schemas`, donc son adresse finit par un identifiant opaque, comme l’exige xref:resources.adoc#API-011[API-011].
 
 == Historique du document
 

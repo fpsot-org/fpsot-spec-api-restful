@@ -40,7 +40,8 @@ Compter une grande collection est lent, et le total change pendant que le client
 [[API-044]]
 *API-044.* Un filtre sur un champ DOIT employer un paramètre de requête au nom de ce champ, comme `status=active`.
 Un filtre sur un intervalle DOIT ajouter `From` ou `To` au nom du champ, comme `createdAtFrom`.
-`From` inclut la borne et `To` l’exclut.
+La spécification de nommage de la {abbr-fpsot-first} permet ces suffixes, et `From` inclut la borne tandis que `To` l’exclut.
+Un filtre sur des renseignements personnels DOIT plutôt suivre <<API-049,API-049>>.
 La description DOIT énumérer chaque filtre qu’accepte une opération.
 Les clients construisent alors un filtre à partir du schéma qu’ils connaissent déjà.
 
@@ -52,6 +53,7 @@ Un serveur qui ignore un filtre mal orthographié renvoie les mauvais éléments
 [[API-046]]
 *API-046.* Une recherche en texte libre DEVRAIT employer le paramètre de requête `search`.
 La description DOIT indiquer quels champs la recherche lit.
+Une recherche sur des renseignements personnels DOIT plutôt suivre <<API-049,API-049>>.
 Un seul nom de paramètre permet à une interface d’offrir la même boîte de recherche pour chaque collection.
 
 == Tri
@@ -59,7 +61,7 @@ Un seul nom de paramètre permet à une interface d’offrir la même boîte de 
 [[API-047]]
 *API-047.* Un client PEUT demander un ordre avec le paramètre de requête `sortBy`.
 Sa valeur est un nom de champ, ou plusieurs noms séparés par des virgules.
-Le paramètre de requête `sortOrder` PEUT alors valoir `asc` ou `desc`, et `asc` est la valeur par défaut.
+Le paramètre de requête `sortOrder` PEUT alors valoir `ascending` ou `descending`, et `ascending` est la valeur par défaut.
 La description DOIT énumérer les champs selon lesquels chaque opération peut trier.
 Une forme commune permet à tout client de trier toute collection de la même façon.
 
@@ -69,23 +71,33 @@ Tout ordre DOIT se terminer par le champ `id`, pour que deux éléments ne soien
 Un ordre stable est la condition pour qu’un curseur fonctionne.
 Sans lui, un élément peut paraître sur deux pages ou sur aucune.
 
+== Recherches sur des renseignements personnels
+
+[[API-049]]
+*API-049.* Une recherche ou un filtre sur des renseignements personnels DOIT employer `POST` sur la sous-ressource `searches` de la collection.
+Les renseignements personnels comprennent les noms, les dates de naissance et les identifiants de personnes.
+Les critères DOIVENT figurer dans un corps {abbr-json}, comme dans `POST /v1/parties/searches`.
+La réponse DOIT être une page au format de <<API-042,API-042>>, et son curseur NE DOIT PAS contenir les critères.
+Les serveurs et les mandataires écrivent les adresses dans des journaux, mais pas les corps.
+Les critères restent ainsi hors des journaux, comme l’exige xref:security.adoc#API-085[API-085].
+
 == Exemple
 
 [source,http]
 ----
-GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=desc&pageSize=2 HTTP/1.1
+GET /v1/assets?status=active&sortBy=updatedAt&sortOrder=descending&pageSize=2 HTTP/1.1
 Accept: application/json
 
 HTTP/1.1 200 OK
 Content-Type: application/json
-Link: <https://api.example.ca/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
+Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
 
 {
   "items": [
     {"id": "01a19c93-e2e0-7b3e-9d52-0c8e4f6a1b23", "status": "active", "updatedAt": "2026-11-02T14:05:00Z"},
     {"id": "01a19671-c1c0-7f00-8c11-2d3e4f5a6b7c", "status": "active", "updatedAt": "2026-11-01T09:30:00Z"}
   ],
-  "next": "https://api.example.ca/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
+  "next": "https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9"
 }
 ----
 

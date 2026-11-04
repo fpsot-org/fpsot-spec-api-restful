@@ -6,6 +6,6 @@ This repository holds the FPSOT RESTful API specification: the common rules for 
 - Follow `skill/SKILL.md` when you design, describe, build or call an FPSOT API. The spec text wins on any difference.
 - Path, field and event type names follow the FPSOT naming specification. Value formats follow the FPSOT data types specification. Do not restate their rules here.
 - Every page exists in English and in French, with the same file name and the same IDs.
-- Terms and abbreviations come from the term base of `fpsot-spec-writing`. Add a missing term there first. `TERMS-NEEDED.md` lists the terms waiting for it.
+- Terms and abbreviations come from the term base of `fpsot-spec-writing`. Add a missing term there first.
 - Do not copy text from outside standards. Summarise them in your own words and cite the exact version.
 - Commits follow Conventional Commits and are signed. Pull requests are squash-merged.

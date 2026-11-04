@@ -46,10 +46,10 @@ The server SHOULD also send a `Link` header with the relation type `deprecation`
 A client learns of the deprecation from its own traffic, without reading any notice.
 
 [[API-055]]
-*API-055.* Once the server knows the date of removal, it MUST send a `Sunset` header with that date.
-The header follows {abbr-rfc} 8594.
+*API-055.* Once the server knows the removal date, it MUST send a `Sunset` header of {abbr-rfc} 8594 with it.
 The sunset date MUST be at least 12 months after the first `Deprecation` header.
 The previous major version MUST stay available until that date.
+A sunset MUST remove an operation only in a new major version, as <<API-051,API-051>> requires.
 Public bodies plan and fund their changes a year ahead.
 A shorter notice would force a client to change before it has the budget.
 

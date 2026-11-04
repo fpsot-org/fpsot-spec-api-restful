@@ -22,7 +22,9 @@ Il NE DOIT PAS non plus révéler combien d’éléments existent.
 Un numéro séquentiel permet à n’importe qui de compter les éléments et de deviner l’adresse du suivant.
 
 [[API-012]]
-*API-012.* Un chemin NE DEVRAIT PAS contenir plus d’une collection sous un élément, comme dans `/v1/parties/{partyId}/addresses`.
+*API-012.* Un chemin NE DEVRAIT PAS descendre de plus d’une collection sous un élément de premier niveau.
+Un niveau est permis, comme dans `/v1/parties/{partyId}/addresses`.
+Un chemin comme `/v1/parties/{partyId}/addresses/{addressId}/notes` est trop profond.
 Les chemins profonds sont longs, répètent de l’information et se brisent quand un élément change de parent.
 
 [[API-013]]

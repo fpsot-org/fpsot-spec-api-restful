@@ -9,7 +9,7 @@
 - [Resources](spec/en/resources.adoc): API-010 to API-018.
 - [Descriptions](spec/en/openapi.adoc): API-020 to API-027.
 - [Errors](spec/en/errors.adoc): API-030 to API-037.
-- [Pages, filters and sorting](spec/en/collections.adoc): API-040 to API-048.
+- [Pages, filters and sorting](spec/en/collections.adoc): API-040 to API-049.
 - [Versions](spec/en/versions.adoc): API-050 to API-056.
 - [Retries](spec/en/retries.adoc): API-060 to API-063.
 - [Formats and languages](spec/en/languages.adoc): API-070 to API-074.

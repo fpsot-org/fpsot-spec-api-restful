@@ -21,21 +21,27 @@ A clear refusal is better than a body in a format the client cannot read.
 == Bilingual data
 
 [[API-072]]
-*API-072.* A field that holds text in several languages MUST return every language that the item holds.
+*API-072.* By default, a field that holds text in several languages MUST return every language that the item holds.
 The value MUST be an object keyed by language tag, such as `{"en": "Fishing licence", "fr": "Permis de pêche"}`.
 Its form comes from the {abbr-fpsot-first} data types specification.
-The `Accept-Language` header MUST NOT remove languages from such a field.
 The data is the record itself, and every client can then show it in either language.
 A cache can also share one response between readers of both languages.
+
+Some jurisdiction rules require an answer in the language that the client asks for.
+Section 6 of the federal standards for {abbr-api} design in Canada is one such rule.
+Where such a rule applies, the server MAY return only the languages that `Accept-Language` asks for.
+It MUST then send a `Content-Language` header and `Vary: Accept-Language`.
+These headers keep each cached copy apart.
 
 == Text that the server writes
 
 [[API-073]]
-*API-073.* A server MUST read the `Accept-Language` header to choose the language of the text it writes.
+*API-073.* A server MUST choose the language of the text it writes in this order.
+It first takes a language saved in the profile of the authenticated person.
+Next come `Accept-Language` and then the deployment default, as {abbr-fpsot} sets out in its internationalization specification.
 This text includes problem `title` and `detail` members and other messages.
 The server MUST support English and French.
-When it supports none of the requested languages, it MUST fall back as the {abbr-fpsot} internationalization specification sets.
-Each person then reads messages in the official language they chose.
+Each person then gets messages in the official language of their choice, even on a device set to another language.
 
 [[API-074]]
 *API-074.* A response that contains text the server wrote MUST carry a `Content-Language` header with the language it used.

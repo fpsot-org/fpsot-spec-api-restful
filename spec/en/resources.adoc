@@ -21,7 +21,9 @@ It MUST NOT be a database row number or any other value that reveals how many it
 With a sequential number, anyone can count the items and guess the address of the next one.
 
 [[API-012]]
-*API-012.* A path SHOULD NOT hold more than one collection under an item, as in `/v1/parties/{partyId}/addresses`.
+*API-012.* A path SHOULD NOT go deeper than one collection under a top-level item.
+One level is allowed, as in `/v1/parties/{partyId}/addresses`.
+A path such as `/v1/parties/{partyId}/addresses/{addressId}/notes` goes too deep.
 Deep paths are long, repeat information and break when an item moves to another parent.
 
 [[API-013]]

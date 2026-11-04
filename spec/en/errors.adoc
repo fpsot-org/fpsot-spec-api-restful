@@ -11,18 +11,19 @@ The server MUST send this format whatever the `Accept` header of the request say
 One format lets a client and a gateway handle every error of every {abbr-api} with the same code.
 
 [[API-031]]
-*API-031.* The `type` member MUST be an absolute {abbr-https-first} {abbr-uri-first} that names one kind of problem.
+*API-031.* The `type` member MUST be an absolute {abbr-https-first} {abbr-uri-first} that names one kind of problem, never `about:blank`.
 The {abbr-uri} MUST stay the same for as long as that kind of problem exists.
+It is a stable identifier, whether or not a page exists at that address yet.
 It SHOULD lead to a page that explains the problem in English and in French.
-An {abbr-api} MUST NOT use `about:blank`.
 Clients branch on the `type`, so it works like a stable error code.
 The page tells a developer what went wrong and how to fix it.
 
 [[API-032]]
 *API-032.* An {abbr-api} MUST use a type from this table when it fits the problem.
-A domain specification MUST define its own types for the problems of its domain.
-It MUST publish them with the description.
+A domain specification MUST define its own types, and MUST publish them with the description.
 Each type in the table is a {abbr-uri} that starts with `https://fpsot.org/problems/`, followed by the name.
+Before version 1.0, {abbr-fpsot-first} will publish a page in English at the address of each shared type.
+The French version of each page will be under `https://fpsot.org/fr/problems/`.
 
 [cols="2,1,3",options="header"]
 |===
