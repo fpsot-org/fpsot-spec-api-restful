@@ -5,7 +5,7 @@ Toute {abbr-api-first} a une description que lisent les personnes et les outils.
 La description est le contrat entre le serveur et ses clients.
 
 [[API-020]]
-*API-020.* Toute {abbr-api} DOIT avoir une description selon la spécification OpenAPI, version 3.1.2 ou une version corrective 3.1 ultérieure.
+*API-020.* Toute {abbr-api} DOIT avoir une description selon la link:https://spec.openapis.org/oas/v3.1.2.html[spécification OpenAPI], version 3.1.2 ou une version corrective 3.1 ultérieure.
 La description DOIT couvrir chaque opération, paramètre, en-tête, corps de requête et réponse de l’{abbr-api}.
 OpenAPI est le format commun des outils d’{abbr-api}.
 Une description complète permet à n’importe qui de produire un client, un test ou une page de documentation.
@@ -22,7 +22,7 @@ Les acheteurs et les autres équipes construisent selon le contrat publié, pas 
 Un client et une passerelle trouvent alors la description sans rien demander à personne.
 
 [[API-023]]
-*API-023.* Les schémas DOIVENT employer {abbr-json} Schema, version 2020-12, le dialecte par défaut d’OpenAPI 3.1.
+*API-023.* Les schémas DOIVENT employer link:https://json-schema.org/draft/2020-12[JSON Schema, version 2020-12], le dialecte par défaut d’OpenAPI 3.1.
 Ils NE DOIVENT PAS employer le mot clé `nullable` d’OpenAPI 3.0.
 Un schéma dans un dialecte normalisé fonctionne avec tout validateur {abbr-json} Schema, dans OpenAPI ou ailleurs.
 
@@ -48,10 +48,18 @@ Au Canada, les organismes publics doivent servir les deux communautés de langue
 *API-027.* L’intégration continue DEVRAIT vérifier chaque description avec un outil d’analyse OpenAPI.
 L’outil repère un champ manquant ou un renvoi brisé avant qu’un client le trouve.
 
+== Références
+
+=== Références normatives
+
+* link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI Specification], OpenAPI Initiative, 3.1.2, 2025-09-19. link:https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html[Copie archivée]
+* link:https://json-schema.org/draft/2020-12[JSON Schema], JSON Schema, 2020-12, 2022-06-16. link:https://web.archive.org/web/20261011162224/https://json-schema.org/draft/2020-12[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes et références ajoutées.
 |===

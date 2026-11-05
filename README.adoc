@@ -42,7 +42,7 @@ The comparison data in `jurisdictions/` shows how the rules compare with those o
 | Comparison data per jurisdiction. `baseline.yaml` lists the compared requirements.
 |===
 
-== Licence
+== License
 
 The specification is under the Community Specification License 1.0.
 Source code is under the Apache License 2.0.

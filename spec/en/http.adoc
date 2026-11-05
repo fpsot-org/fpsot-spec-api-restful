@@ -1,13 +1,13 @@
 = Methods and status codes
 include::_fpsot-terms.adoc[]
 
-These rules apply the {abbr-http-first} semantics of {abbr-rfc-first} 9110 to every {abbr-api-first}.
+These rules apply the {abbr-http-first} semantics of link:https://www.rfc-editor.org/info/rfc9110[RFC 9110] to every {abbr-api-first}.
 Clients, proxies and tools then read each request and response the same way.
 
 == Methods
 
 [[API-001]]
-*API-001.* An {abbr-api} MUST give each method the meaning that {abbr-rfc} 9110 defines.
+*API-001.* An {abbr-api} MUST give each method the meaning that link:https://www.rfc-editor.org/info/rfc9110[RFC 9110] defines.
 
 [cols="1,3",options="header"]
 |===
@@ -31,8 +31,8 @@ Clients, crawlers and prefetching browsers send safe requests without asking any
 A client can repeat an idempotent request after a timeout without creating a second change.
 
 [[API-003]]
-*API-003.* A `PATCH` request MUST use the {abbr-json-first} Merge Patch format of {abbr-rfc} 7396, with the media type `application/merge-patch+json`.
-An {abbr-api} MAY also accept the {abbr-json} Patch format of {abbr-rfc} 6902.
+*API-003.* A `PATCH` request MUST use the {abbr-json-first} Merge Patch format of link:https://www.rfc-editor.org/info/rfc7396[RFC 7396], with the media type `application/merge-patch+json`.
+An {abbr-api} MAY also accept the {abbr-json} Patch format of link:https://www.rfc-editor.org/info/rfc6902[RFC 6902].
 A merge patch looks like the resource itself, so it is easy to write and to read.
 One required format lets every client change every {abbr-api} the same way.
 
@@ -40,8 +40,8 @@ One required format lets every client change every {abbr-api} the same way.
 
 [[API-004]]
 *API-004.* An {abbr-api} MUST answer with the status code that fits the result, from this table.
-A domain specification MAY use another code that {abbr-rfc} 9110 defines, when none of these fits.
-The codes `428` and `429` come from {abbr-rfc} 6585, and the others from {abbr-rfc} 9110.
+A domain specification MAY use another code that link:https://www.rfc-editor.org/info/rfc9110[RFC 9110] defines, when none of these fits.
+The codes `428` and `429` come from link:https://www.rfc-editor.org/info/rfc6585[RFC 6585], and the others from link:https://www.rfc-editor.org/info/rfc9110[RFC 9110].
 
 [cols="1,3",options="header"]
 |===
@@ -102,10 +102,20 @@ Without it, the server MUST answer `428 Precondition Required`.
 When the tag no longer matches, the server MUST answer `412 Precondition Failed` and MUST NOT change the item.
 Otherwise, two people who change the same record at once would lose one change without knowing it.
 
+== References
+
+=== Normative
+
+* link:https://www.rfc-editor.org/info/rfc9110[RFC 9110, HTTP Semantics], IETF, STD 97, 2022-06. link:https://web.archive.org/web/20260520194626/https://www.rfc-editor.org/rfc/rfc9110[Archived copy]
+* link:https://www.rfc-editor.org/info/rfc7396[RFC 7396, JSON Merge Patch], IETF, 2014-10. link:https://web.archive.org/web/20260206212129/https://www.rfc-editor.org/rfc/rfc7396[Archived copy]
+* link:https://www.rfc-editor.org/info/rfc6902[RFC 6902, JSON Patch], IETF, 2013-04.
+* link:https://www.rfc-editor.org/info/rfc6585[RFC 6585, Additional HTTP Status Codes], IETF, 2012-04. link:https://web.archive.org/web/20260520194549/https://www.rfc-editor.org/rfc/rfc6585[Archived copy]
+
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
+|0.1.1 |2026-11-04 |Linked outside standards and added references.
 |===

@@ -25,7 +25,7 @@ The client would then skip some items or read some twice.
 [[API-042]]
 *API-042.* A page MUST be a {abbr-json-first} object with the items in an `items` member.
 When a next page exists, the page MUST carry its absolute {abbr-url-first} in a `next` member.
-The response SHOULD also carry it in a `Link` header of relation type `next`, as {abbr-rfc-first} 8288 defines.
+The response SHOULD also carry it in a `Link` header of relation type `next`, as link:https://www.rfc-editor.org/info/rfc8288[RFC 8288] defines.
 The last page MUST NOT have a `next` member.
 The `next` member is part of the schema, so generated clients find it.
 Generic tools follow the `Link` header without knowing the schema.
@@ -48,7 +48,7 @@ Clients then build a filter from the schema they already know.
 [[API-045]]
 *API-045.* A query parameter that is unknown or has a wrong value MUST get `400 Bad Request`.
 The problem type is `invalid-parameter`.
-A server that ignores a misspelt filter returns the wrong items, and the client never learns why.
+A server that ignores a misspelled filter returns the wrong items, and the client never learns why.
 
 [[API-046]]
 *API-046.* A free-text search SHOULD use the `search` query parameter.
@@ -101,10 +101,17 @@ Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
 }
 ----
 
+== References
+
+=== Normative
+
+* link:https://www.rfc-editor.org/info/rfc8288[RFC 8288, Web Linking], IETF, 2017-10. link:https://web.archive.org/web/20260427180630/https://www.rfc-editor.org/rfc/rfc8288[Archived copy]
+
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
+|0.1.1 |2026-11-04 |Linked outside standards, added references and moved to US spelling.
 |===

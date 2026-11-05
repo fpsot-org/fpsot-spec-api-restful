@@ -2,7 +2,7 @@
 include::_fpsot-terms.adoc[]
 
 Every {abbr-api-first} reports a problem in the same format.
-That format is the problem details object of {abbr-rfc-first} 9457.
+That format is the problem details object of link:https://www.rfc-editor.org/info/rfc9457[RFC 9457].
 
 [[API-030]]
 *API-030.* Every response with a `4xx` or `5xx` status code MUST carry a problem details body.
@@ -73,7 +73,7 @@ Support staff can then find the logs of one failed request without any other det
 [[API-036]]
 *API-036.* A `validation-failed` or `invalid-parameter` problem MUST list each fault in an `errors` member.
 Each entry of `errors` MUST have a `detail` and MUST name the place of the fault.
-A fault in the body uses `pointer`, a {abbr-json-first} Pointer of {abbr-rfc} 6901 to the field.
+A fault in the body uses `pointer`, a {abbr-json-first} Pointer of link:https://www.rfc-editor.org/info/rfc6901[RFC 6901] to the field.
 A fault in a query parameter or a header uses `parameter`, with its name.
 A form can then show each message next to the right field, and fix them all at once.
 
@@ -104,10 +104,18 @@ Content-Language: en
 }
 ----
 
+== References
+
+=== Normative
+
+* link:https://www.rfc-editor.org/info/rfc9457[RFC 9457, Problem Details for HTTP APIs], IETF, 2023-07. link:https://web.archive.org/web/20260514123618/https://www.rfc-editor.org/rfc/rfc9457[Archived copy]
+* link:https://www.rfc-editor.org/info/rfc6901[RFC 6901, JSON Pointer], IETF, 2013-04.
+
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
+|0.1.1 |2026-11-04 |Linked outside standards and added references.
 |===

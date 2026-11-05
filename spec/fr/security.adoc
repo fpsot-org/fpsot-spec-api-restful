@@ -3,18 +3,18 @@ include::_fpsot-terms.adoc[]
 
 Les serveurs d’{abbr-api-first} publics détiennent des données personnelles et officielles, et des personnes malveillantes les sondent chaque jour.
 Ces règles fixent la protection minimale de toute {abbr-api}.
-La liste {abbr-owasp-first} {abbr-api} Security Top 10 de 2023 énumère les risques qu’elles visent.
+La liste link:https://owasp.org/API-Security/editions/2023/en/0x11-t10/[OWASP API Security Top 10] de 2023 énumère les risques qu’elles visent.
 
 == Transport
 
 [[API-080]]
 *API-080.* Une {abbr-api} DOIT servir du contenu et accepter des requêtes uniquement en {abbr-https-first}, avec {abbr-tls-first} 1.2 ou 1.3.
 Elle NE DOIT PAS servir de contenu ni accepter de requête en {abbr-http-first} simple.
-Un serveur DEVRAIT offrir {abbr-tls} 1.3 et DOIT suivre le {abbr-rfc-first} 9325 et les documents qui le mettent à jour.
+Un serveur DEVRAIT offrir {abbr-tls} 1.3 et DOIT suivre le link:https://www.rfc-editor.org/info/rfc9325[RFC 9325] et les documents qui le mettent à jour.
 En {abbr-http} simple, n’importe qui sur le réseau peut lire ou modifier l’échange.
 
 Un serveur NE DEVRAIT PAS répondre du tout en {abbr-http} simple.
-Certaines règles obligatoires exigent une redirection, comme les exigences fédérales de configuration des sites Web au Canada.
+Certaines règles obligatoires exigent une redirection, comme les link:https://www.canada.ca/en/government/system/digital-government/policies-standards/enterprise-it-service-common-configurations/web-sites.html[exigences fédérales de configuration des sites Web] au Canada.
 Quand une telle règle s’applique, le serveur PEUT répondre par une redirection permanente vers l’adresse {abbr-https}.
 Cette redirection DOIT employer le code `301` ou `308`, et NE DOIT PAS porter de contenu.
 Une redirection arrive trop tard pour protéger la première requête, car le client l’a déjà envoyée en clair.
@@ -67,9 +67,9 @@ Les champs qu’un client fixe sans en avoir le droit forment la faille d’affe
 == Contrôle d’accès
 
 [[API-090]]
-*API-090.* Une {abbr-api} qui doit savoir qui l’appelle DOIT accepter les jetons porteurs OAuth 2.0.
-Elle DOIT suivre le {abbr-rfc} 9700, la meilleure pratique de sécurité d’OAuth 2.0.
-Elle DEVRAIT employer OpenID Connect quand elle doit connaître la personne derrière le client.
+*API-090.* Une {abbr-api} qui doit savoir qui l’appelle DOIT accepter les jetons porteurs link:https://www.rfc-editor.org/info/rfc6749[OAuth 2.0].
+Elle DOIT suivre le link:https://www.rfc-editor.org/info/rfc9700[RFC 9700], la meilleure pratique de sécurité d’OAuth 2.0.
+Elle DEVRAIT employer link:https://openid.net/specs/openid-connect-core-1_0.html[OpenID Connect] quand elle doit connaître la personne derrière le client.
 Elle DOIT vérifier l’émetteur, l’audience, l’expiration et la signature de chaque jeton.
 Cette spécification ne définit pas comment se connecter ni comment émettre des jetons.
 OAuth 2.0 et OpenID Connect sont les normes communes des services publics d’identité.
@@ -102,9 +102,9 @@ Elle garde aussi sous contrôle le coût d’un service public.
 
 [[API-095]]
 *API-095.* Un serveur DEVRAIT indiquer au client son quota avec les en-têtes `RateLimit-Policy` et `RateLimit`.
-Ces en-têtes viennent de la dernière version du projet Internet draft-ietf-httpapi-ratelimit-headers.
+Ces en-têtes viennent de la dernière version du projet Internet link:https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/[draft-ietf-httpapi-ratelimit-headers].
 Chaque version d’un projet expire après six mois, et la version suivante peut changer les en-têtes.
-La règle reste une recommandation jusqu’à ce que le projet devienne un {abbr-rfc}.
+La règle reste une recommandation jusqu’à ce que le projet devienne un {abbr-rfc-first}.
 Le client ralentit alors avant d’atteindre la limite.
 
 == Inventaire
@@ -115,10 +115,26 @@ La liste DOIT donner la description de chacun.
 Elle DOIT retirer une version après sa date de retrait.
 Une ancienne version oubliée garde ouvertes de vieilles failles longtemps après que la nouvelle version les a corrigées.
 
+== Références
+
+=== Références normatives
+
+* link:https://www.rfc-editor.org/info/rfc9325[RFC 9325, Recommendations for Secure Use of TLS and DTLS], IETF, BCP 195, 2022-11. link:https://web.archive.org/web/20260414231540/https://www.rfc-editor.org/rfc/rfc9325[Copie archivée]
+* link:https://www.rfc-editor.org/info/rfc6749[RFC 6749, The OAuth 2.0 Authorization Framework], IETF, 2012-10.
+* link:https://www.rfc-editor.org/info/rfc9700[RFC 9700, Best Current Practice for OAuth 2.0 Security], IETF, BCP 240, 2025-01. link:https://web.archive.org/web/20260516162557/https://www.rfc-editor.org/rfc/rfc9700[Copie archivée]
+* link:https://openid.net/specs/openid-connect-core-1_0.html[OpenID Connect Core 1.0], OpenID Foundation, errata set 2, 2023-12-15. link:https://web.archive.org/web/20261023004717/https://openid.net/specs/openid-connect-core-1_0.html[Copie archivée]
+* link:https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/[RateLimit header fields for HTTP, draft-ietf-httpapi-ratelimit-headers], IETF, version 11, 2026-05-23. link:https://web.archive.org/web/20261015055820/https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/[Copie archivée]
+
+=== Références informatives
+
+* link:https://owasp.org/API-Security/editions/2023/en/0x11-t10/[OWASP Top 10 API Security Risks], OWASP, 2023. link:https://web.archive.org/web/20260903085910/https://owasp.org/API-Security/editions/2023/en/0x11-t10/[Copie archivée]
+* link:https://www.canada.ca/en/government/system/digital-government/policies-standards/enterprise-it-service-common-configurations/web-sites.html[Web Sites and Services Management Configuration Requirements], Secrétariat du Conseil du Trésor du Canada, 2024-10-25. link:https://web.archive.org/web/20251115162619/https://www.canada.ca/en/government/system/digital-government/policies-standards/enterprise-it-service-common-configurations/web-sites.html[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes et références ajoutées.
 |===
