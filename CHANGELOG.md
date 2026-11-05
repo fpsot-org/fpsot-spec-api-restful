@@ -6,6 +6,15 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-04
+
+### Changed
+
+- Each RFC and other outside standard named in the text now links to its source.
+- Each page that cites outside sources has a References section, with archived copies where one exists.
+- English text uses US spelling, such as "license" and "misspelled".
+- The repository turns on the references and US spelling checks.
+
 ## [0.1.0] - 2026-11-04
 
 ### Added
@@ -23,5 +32,6 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 - Comparison data for the international baseline, Canada and Québec.
 - A how-to guide, the agent skill, `llms.txt` and the book in both languages.
 
-[Unreleased]: https://github.com/fpsot-org/fpsot-spec-api-restful/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/fpsot-org/fpsot-spec-api-restful/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/fpsot-org/fpsot-spec-api-restful/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/fpsot-org/fpsot-spec-api-restful/releases/tag/v0.1.0

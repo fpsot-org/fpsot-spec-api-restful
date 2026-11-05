@@ -2,7 +2,7 @@
 include::_fpsot-terms.adoc[]
 
 Un événement informe d’autres systèmes que quelque chose s’est produit, comme un nouveau dossier ou un changement d’état.
-Tout événement de la {abbr-fpsot-first} emploie CloudEvents 1.0.2, pour qu’un même consommateur lise les événements de chaque service.
+Tout événement de la {abbr-fpsot-first} emploie link:https://github.com/cloudevents/spec/blob/fc1f6f31f5f011a72183f1bcea20c987cb683ade/cloudevents/spec.md[CloudEvents 1.0.2], pour qu’un même consommateur lise les événements de chaque service.
 
 [[API-100]]
 *API-100.* Un événement DOIT être un événement CloudEvents 1.0.2 dans le format d’événement {abbr-json-first}, avec le type de média `application/cloudevents+json`.
@@ -25,7 +25,7 @@ Le mode structuré garde l’événement identique sur chaque transport.
 |===
 
 L’événement DEVRAIT aussi porter `subject`, avec l’identifiant de l’élément qui a changé.
-Il DEVRAIT porter `dataschema`, avec l’{abbr-uri} du schéma {abbr-json} Schema de ses données.
+Il DEVRAIT porter `dataschema`, avec l’{abbr-uri} du schéma link:https://json-schema.org/draft/2020-12[JSON Schema] de ses données.
 CloudEvents laisse facultatifs `time`, `subject` et `datacontenttype`.
 Des attributs obligatoires permettent à un consommateur de trier, d’acheminer et de vérifier chaque événement sans lire ses données.
 
@@ -70,10 +70,18 @@ Un producteur peut alors ajouter un attribut ou un champ sans briser ses consomm
 
 Le schéma est un élément de la collection `schemas`, donc son adresse finit par un identifiant opaque, comme l’exige xref:resources.adoc#API-011[API-011].
 
+== Références
+
+=== Références normatives
+
+* link:https://github.com/cloudevents/spec/blob/fc1f6f31f5f011a72183f1bcea20c987cb683ade/cloudevents/spec.md[CloudEvents Specification], CNCF, 1.0.2, 2022-02-06.
+* link:https://json-schema.org/draft/2020-12[JSON Schema], JSON Schema, 2020-12, 2022-06-16. link:https://web.archive.org/web/20261011162224/https://json-schema.org/draft/2020-12[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes et références ajoutées.
 |===

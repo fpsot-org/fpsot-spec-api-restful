@@ -25,7 +25,7 @@ Le client sauterait alors des éléments ou en lirait deux fois.
 [[API-042]]
 *API-042.* Une page DOIT être un objet {abbr-json-first} qui contient les éléments dans un membre `items`.
 Quand une page suivante existe, la page DOIT porter son {abbr-url-first} absolue dans un membre `next`.
-La réponse DEVRAIT aussi la porter dans un en-tête `Link` de type `next`, selon le {abbr-rfc-first} 8288.
+La réponse DEVRAIT aussi la porter dans un en-tête `Link` de type `next`, selon le link:https://www.rfc-editor.org/info/rfc8288[RFC 8288].
 La dernière page NE DOIT PAS avoir de membre `next`.
 Le membre `next` fait partie du schéma, donc les clients produits par des outils le trouvent.
 L’en-tête `Link` permet aux outils génériques de suivre les pages sans connaître le schéma.
@@ -101,10 +101,17 @@ Link: <https://api.example.com/v1/assets?cursor=eyJ1IjoiMjAyNiJ9>; rel="next"
 }
 ----
 
+== Références
+
+=== Références normatives
+
+* link:https://www.rfc-editor.org/info/rfc8288[RFC 8288, Web Linking], IETF, 2017-10. link:https://web.archive.org/web/20260427180630/https://www.rfc-editor.org/rfc/rfc8288[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes, références ajoutées et orthographe américaine pour l'anglais.
 |===

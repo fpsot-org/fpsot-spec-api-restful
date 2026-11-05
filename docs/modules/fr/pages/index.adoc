@@ -68,10 +68,16 @@ Consultez les exigences xref:../../../../spec/fr/errors.adoc#API-030[API-030] à
 
 == Vérifier avant de publier
 
-. Faites analyser la description par un outil d’analyse OpenAPI dans l’intégration continue.
+. Faites analyser la description par un outil d’analyse link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI] dans l’intégration continue.
 . Vérifiez que le serveur répond comme le dit la description.
 . Vérifiez les en-têtes de sécurité d’une vraie réponse avec `curl -sI`.
 . Confirmez que les requêtes en {abbr-http-first} simple ne reçoivent aucun contenu. Elles ne reçoivent aucune réponse, ou une redirection permanente quand une règle obligatoire l’exige.
+
+== Références
+
+=== Références informatives
+
+* link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI Specification], OpenAPI Initiative, 3.1.2, 2025-09-19. link:https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html[Copie archivée]
 
 == Historique du document
 
@@ -79,4 +85,5 @@ Consultez les exigences xref:../../../../spec/fr/errors.adoc#API-030[API-030] à
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes et références ajoutées.
 |===

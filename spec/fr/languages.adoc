@@ -7,7 +7,7 @@ Ces règles fixent le format des deux, et la langue de ces textes.
 == Types de médias
 
 [[API-070]]
-*API-070.* Une {abbr-api} DOIT accepter et renvoyer du {abbr-json-first}, comme le définit le {abbr-rfc-first} 8259, encodé en {abbr-utf-8-first}.
+*API-070.* Une {abbr-api} DOIT accepter et renvoyer du {abbr-json-first}, comme le définit le link:https://www.rfc-editor.org/info/rfc8259[RFC 8259], encodé en {abbr-utf-8-first}.
 Le type de média DOIT être `application/json`, ou un type fondé sur {abbr-json} que nomme cette spécification, comme `application/problem+json`.
 Une {abbr-api} PEUT aussi offrir un autre format, comme un format de tableur pour les données ouvertes.
 Tous les langages de programmation et tous les outils lisent ce format.
@@ -28,7 +28,7 @@ Les données sont le dossier lui-même, et chaque client peut alors les afficher
 Un cache peut aussi partager une même réponse entre les personnes qui lisent l’une ou l’autre langue.
 
 Certaines règles d’une administration exigent une réponse dans la langue que demande le client.
-La section 6 des normes fédérales du Canada sur la conception d’{abbr-api} est une telle règle.
+La section 6 des link:https://www.canada.ca/fr/gouvernement/systeme/gouvernement-numerique/innovations-gouvernementales-numeriques/normes-gouvernement-canada-api.html[normes fédérales du Canada sur la conception d’API] est une telle règle.
 Quand une telle règle s’applique, le serveur PEUT renvoyer seulement les langues que demande `Accept-Language`.
 Il DOIT alors envoyer un en-tête `Content-Language` et `Vary: Accept-Language`.
 Ces en-têtes séparent chaque copie en cache.
@@ -48,10 +48,21 @@ Chaque personne lit alors les messages dans la langue officielle de son choix, m
 Quand la langue dépend de la requête, la réponse DOIT aussi porter `Vary: Accept-Language`.
 Un cache ne sert alors jamais un message en français à un client qui a demandé l’anglais.
 
+== Références
+
+=== Références normatives
+
+* link:https://www.rfc-editor.org/info/rfc8259[RFC 8259, The JSON Data Interchange Format], IETF, STD 90, 2017-12. link:https://web.archive.org/web/20261026222354/https://www.rfc-editor.org/info/rfc8259/[Copie archivée]
+
+=== Références informatives
+
+* link:https://www.canada.ca/fr/gouvernement/systeme/gouvernement-numerique/innovations-gouvernementales-numeriques/normes-gouvernement-canada-api.html[Normes du gouvernement du Canada sur les API], Secrétariat du Conseil du Trésor du Canada, 2025-10-22. link:https://web.archive.org/web/20260731201400/https://www.canada.ca/fr/gouvernement/systeme/gouvernement-numerique/innovations-gouvernementales-numeriques/normes-gouvernement-canada-api.html[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes, références ajoutées et orthographe américaine pour l'anglais.
 |===

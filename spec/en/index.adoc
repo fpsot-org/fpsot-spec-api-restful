@@ -8,7 +8,7 @@ The rules come in ten parts.
 
 * xref:http.adoc[Methods and status codes] set how an {abbr-api} uses the methods, the status codes and conditional requests.
 * xref:resources.adoc[Resources] set how an {abbr-api} names and shapes collections and items.
-* xref:openapi.adoc[Descriptions] set how to describe each {abbr-api} in OpenAPI.
+* xref:openapi.adoc[Descriptions] set how to describe each {abbr-api} in link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI].
 * xref:errors.adoc[Errors] set how an {abbr-api} reports a problem.
 * xref:collections.adoc[Pages, filters and sorting] set how a client reads a long collection.
 * xref:versions.adoc[Versions] set how an {abbr-api} changes without breaking its clients.
@@ -23,13 +23,13 @@ The data types specification sets how to write dates, money, identifiers and bil
 The internationalization specification sets how a server picks a language for the text it writes.
 
 This specification does not define how people sign in or how a server issues tokens.
-It points to the OAuth 2.0 and OpenID Connect standards for that.
+It points to the link:https://www.rfc-editor.org/info/rfc6749[OAuth 2.0] and link:https://openid.net/specs/openid-connect-core-1_0.html[OpenID Connect] standards for that.
 
 == Conformance
 
-[quote, RFC 8174]
+[quote, 'link:https://www.rfc-editor.org/info/rfc8174[RFC 8174]']
 ____
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in all capitals, as shown here.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 (link:https://www.rfc-editor.org/info/rfc2119[RFC 2119], link:https://www.rfc-editor.org/info/rfc8174[RFC 8174]) when, and only when, they appear in all capitals, as shown here.
 ____
 
 The keywords follow requirement WRT-010 of the {abbr-fpsot} writing specification.
@@ -43,10 +43,24 @@ There are two conformance classes.
 A domain specification conforms when every {abbr-api} it defines can conform.
 It can add stricter rules, but it cannot relax a rule of this specification.
 
+== References
+
+=== Normative
+
+* link:https://www.rfc-editor.org/info/rfc2119[RFC 2119, Key words for use in RFCs to Indicate Requirement Levels], IETF, BCP 14, 1997-03. link:https://web.archive.org/web/20261103005705/https://www.rfc-editor.org/info/rfc2119/[Archived copy]
+* link:https://www.rfc-editor.org/info/rfc8174[RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words], IETF, BCP 14, 2017-05. link:https://web.archive.org/web/20261103005743/https://www.rfc-editor.org/info/rfc8174/[Archived copy]
+
+=== Informative
+
+* link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI Specification], OpenAPI Initiative, 3.1.2, 2025-09-19. link:https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html[Archived copy]
+* link:https://www.rfc-editor.org/info/rfc6749[RFC 6749, The OAuth 2.0 Authorization Framework], IETF, 2012-10. link:https://web.archive.org/web/20261103170418/https://www.rfc-editor.org/info/rfc6749/[Archived copy]
+* link:https://openid.net/specs/openid-connect-core-1_0.html[OpenID Connect Core 1.0], OpenID Foundation, errata set 2, 2023-12-15. link:https://web.archive.org/web/20261023004717/https://openid.net/specs/openid-connect-core-1_0.html[Archived copy]
+
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
+|0.1.1 |2026-11-04 |Linked outside standards and added references.
 |===

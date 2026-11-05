@@ -1,13 +1,13 @@
 = Méthodes et codes d’état
 include::_fpsot-terms.adoc[]
 
-Ces règles appliquent à toute {abbr-api-first} la sémantique {abbr-http-first} du {abbr-rfc-first} 9110.
+Ces règles appliquent à toute {abbr-api-first} la sémantique {abbr-http-first} du link:https://www.rfc-editor.org/info/rfc9110[RFC 9110].
 Les clients, les mandataires et les outils lisent alors chaque requête et chaque réponse de la même façon.
 
 == Méthodes
 
 [[API-001]]
-*API-001.* Une {abbr-api} DOIT donner à chaque méthode le sens que définit le {abbr-rfc} 9110.
+*API-001.* Une {abbr-api} DOIT donner à chaque méthode le sens que définit le link:https://www.rfc-editor.org/info/rfc9110[RFC 9110].
 
 [cols="1,3",options="header"]
 |===
@@ -31,8 +31,8 @@ Les clients, les robots d’indexation et les navigateurs envoient des requêtes
 Après un délai expiré, un client peut répéter une requête idempotente sans créer une seconde modification.
 
 [[API-003]]
-*API-003.* Une requête `PATCH` DOIT employer le format {abbr-json-first} Merge Patch du {abbr-rfc} 7396, avec le type de média `application/merge-patch+json`.
-Une {abbr-api} PEUT aussi accepter le format {abbr-json} Patch du {abbr-rfc} 6902.
+*API-003.* Une requête `PATCH` DOIT employer le format {abbr-json-first} Merge Patch du link:https://www.rfc-editor.org/info/rfc7396[RFC 7396], avec le type de média `application/merge-patch+json`.
+Une {abbr-api} PEUT aussi accepter le format {abbr-json} Patch du link:https://www.rfc-editor.org/info/rfc6902[RFC 6902].
 Un correctif de fusion ressemble à la ressource elle-même, il est donc facile à écrire et à lire.
 Un seul format obligatoire permet à tout client de modifier toute {abbr-api} de la même façon.
 
@@ -40,8 +40,8 @@ Un seul format obligatoire permet à tout client de modifier toute {abbr-api} de
 
 [[API-004]]
 *API-004.* Une {abbr-api} DOIT répondre avec le code d’état qui correspond au résultat, selon ce tableau.
-Une spécification de domaine PEUT employer un autre code défini par le {abbr-rfc} 9110 quand aucun de ceux-ci ne convient.
-Les codes `428` et `429` viennent du {abbr-rfc} 6585, et les autres du {abbr-rfc} 9110.
+Une spécification de domaine PEUT employer un autre code défini par le link:https://www.rfc-editor.org/info/rfc9110[RFC 9110] quand aucun de ceux-ci ne convient.
+Les codes `428` et `429` viennent du link:https://www.rfc-editor.org/info/rfc6585[RFC 6585], et les autres du link:https://www.rfc-editor.org/info/rfc9110[RFC 9110].
 
 [cols="1,3",options="header"]
 |===
@@ -102,10 +102,20 @@ Sans cet en-tête, le serveur DOIT répondre `428 Precondition Required`.
 Quand l’étiquette ne correspond plus, le serveur DOIT répondre `412 Precondition Failed` et NE DOIT PAS modifier l’élément.
 Sinon, deux personnes qui modifient le même dossier en même temps perdraient une modification sans le savoir.
 
+== Références
+
+=== Références normatives
+
+* link:https://www.rfc-editor.org/info/rfc9110[RFC 9110, HTTP Semantics], IETF, STD 97, 2022-06. link:https://web.archive.org/web/20260520194626/https://www.rfc-editor.org/rfc/rfc9110[Copie archivée]
+* link:https://www.rfc-editor.org/info/rfc7396[RFC 7396, JSON Merge Patch], IETF, 2014-10. link:https://web.archive.org/web/20260206212129/https://www.rfc-editor.org/rfc/rfc7396[Copie archivée]
+* link:https://www.rfc-editor.org/info/rfc6902[RFC 6902, JSON Patch], IETF, 2013-04. link:https://web.archive.org/web/20261024144505/https://www.rfc-editor.org/info/rfc6902/[Copie archivée]
+* link:https://www.rfc-editor.org/info/rfc6585[RFC 6585, Additional HTTP Status Codes], IETF, 2012-04. link:https://web.archive.org/web/20260520194549/https://www.rfc-editor.org/rfc/rfc6585[Copie archivée]
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.1.1 |2026-11-04 |Liens vers les normes externes et références ajoutées.
 |===
