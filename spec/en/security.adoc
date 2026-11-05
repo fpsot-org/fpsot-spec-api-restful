@@ -119,7 +119,7 @@ A forgotten old version keeps old flaws open long after the new version fixed th
 === Normative
 
 * link:https://www.rfc-editor.org/info/rfc9325[RFC 9325, Recommendations for Secure Use of TLS and DTLS], IETF, BCP 195, 2022-11. link:https://web.archive.org/web/20260414231540/https://www.rfc-editor.org/rfc/rfc9325[Archived copy]
-* link:https://www.rfc-editor.org/info/rfc6749[RFC 6749, The OAuth 2.0 Authorization Framework], IETF, 2012-10.
+* link:https://www.rfc-editor.org/info/rfc6749[RFC 6749, The OAuth 2.0 Authorization Framework], IETF, 2012-10. link:https://web.archive.org/web/20261103170418/https://www.rfc-editor.org/info/rfc6749/[Archived copy]
 * link:https://www.rfc-editor.org/info/rfc9700[RFC 9700, Best Current Practice for OAuth 2.0 Security], IETF, BCP 240, 2025-01. link:https://web.archive.org/web/20260516162557/https://www.rfc-editor.org/rfc/rfc9700[Archived copy]
 * link:https://openid.net/specs/openid-connect-core-1_0.html[OpenID Connect Core 1.0], OpenID Foundation, errata set 2, 2023-12-15. link:https://web.archive.org/web/20261023004717/https://openid.net/specs/openid-connect-core-1_0.html[Archived copy]
 * link:https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/[RateLimit header fields for HTTP, draft-ietf-httpapi-ratelimit-headers], IETF, version 11, 2026-05-23. link:https://web.archive.org/web/20261015055820/https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/[Archived copy]
