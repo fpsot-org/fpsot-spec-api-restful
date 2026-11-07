@@ -11,6 +11,7 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 ### Added
 
 - API-019: a capability may serve its API under a base path that a deployment sets, so several capabilities can run in one application. An adapter that implements an outside specification, such as GovStack, may follow that specification's paths.
+- API-020: a new description should use OpenAPI 3.2 (3.2.1 or later). OpenAPI 3.1 stays allowed while common generators, such as Quarkus's, still write it.
 
 ### Fixed
 

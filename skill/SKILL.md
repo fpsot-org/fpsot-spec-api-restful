@@ -31,7 +31,7 @@ Path, field and event type names follow the FPSOT naming specification. Dates, m
 
 ## Descriptions
 
-- Every API must have a complete OpenAPI 3.1 description, 3.1.2 or a later 3.1 patch (API-020).
+- Every API must have a complete OpenAPI description; new ones should use 3.2 (3.2.1 or later), and 3.1 (3.1.2 or later) stays allowed (API-020).
 - The domain spec must publish it, and it is normative. Servers must conform to it, and CI should test that (API-021).
 - A running server must serve it at `/v<major>/openapi` as JSON (API-022). Schemas must use JSON Schema 2020-12, without `nullable` (API-023).
 - Each operation must have a unique `operationId` in field-name form, a summary and a description (API-024).

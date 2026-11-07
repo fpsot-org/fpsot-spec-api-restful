@@ -24,7 +24,7 @@ rows:
     requirement: {en: Every API has an OpenAPI description., fr: Toute API a une description OpenAPI.}
     international: {en: "OpenAPI 3.1 describes HTTP APIs, with JSON Schema 2020-12 as its default schema dialect. It does not require anyone to use it.", fr: "OpenAPI 3.1 décrit les API HTTP, avec JSON Schema 2020-12 comme dialecte de schéma par défaut. Elle n’oblige personne à l’employer."}
     international_source: {title: "OpenAPI Specification", version: "3.1.2", date: "2025-09-19", url: "https://spec.openapis.org/oas/v3.1.2.html", archive: "https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html"}
-    fpsot: {en: "A complete OpenAPI 3.1 description, published with the domain specification and served by the API.", fr: "Une description OpenAPI 3.1 complète, publiée avec la spécification de domaine et servie par l’API."}
+    fpsot: {en: "A complete OpenAPI description, 3.2 preferred and 3.1 allowed, published with the domain specification and served by the API.", fr: "Une description OpenAPI complète, de préférence en 3.2 et permise en 3.1, publiée avec la spécification de domaine et servie par l’API."}
   - id: API-030
     topic: errors
     requirement: {en: Errors are problem details., fr: Les erreurs sont des détails de problème.}
