@@ -89,7 +89,7 @@ Path, field and event type names follow the FPSOT naming specification. Dates, m
 - Every response must send `nosniff`; non-public data must send `no-store`; other responses should send an explicit `Cache-Control` (API-082). Servers must not send software or version headers (API-083).
 - CORS headers must be sent only when needed, with a fixed origin list, never echoing `Origin`, never `*` with credentials. Open data without credentials may allow `*` (API-084).
 - URLs must not carry secrets, tokens or personal data (API-085). Servers must validate input, limit body size with `413`, and ignore or refuse read-only fields (API-086).
-- An API that must know its caller must accept OAuth 2.0 bearer tokens per RFC 9700, and should use OpenID Connect for people. It must check issuer, audience, expiry and signature (API-090).
+- An API that must know its caller must accept OAuth 2.0 bearer tokens (RFC 6750) per RFC 9700, and should use OpenID Connect for people. It must check issuer, audience, expiry and signature (API-090).
 - Servers must not accept credentials in query parameters, and an API key alone must not open non-public data (API-091).
 - Servers must check access to every item and every field (API-092). They should answer `404` rather than `403` when existence is private (API-093).
 - Every API must limit request rates, with `429` and `Retry-After`, and the description must state the limits (API-094).
