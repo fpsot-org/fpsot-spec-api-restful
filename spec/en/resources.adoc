@@ -62,10 +62,21 @@ A client MUST treat an absent field and a `null` field the same way.
 In a merge patch, `null` removes a field, so the request form differs from the response form.
 A shared reading of absent values avoids two meanings for the same state.
 
+[[API-019]]
+*API-019.* A capability MAY serve its {abbr-api} under a base path that a deployment sets, such as `/registry`.
+The paths of API-010 and API-022 then follow that base path, as in `/registry/v1/assets` and `/registry/v1/openapi`.
+The description MUST then give the base path in its server URL.
+Several capabilities can then run in one application without two paths colliding.
+
+An adapter that implements an outside specification, such as a GovStack building block, MAY follow that specification's paths instead.
+Its description MUST name that specification and its version.
+The capability's own {abbr-api} still follows this specification.
+
 == Document history
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
+|0.2.0 |2026-11-07 |New API-019: a capability may serve its API under a deployment base path, and an adapter for an outside specification may follow that specification's paths.
 |===

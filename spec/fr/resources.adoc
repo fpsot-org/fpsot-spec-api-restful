@@ -65,10 +65,21 @@ Dans un correctif de fusion, `null` supprime un champ.
 La forme de la requête diffère donc de celle de la réponse.
 Une lecture commune des valeurs absentes évite deux sens pour un même état.
 
+[[API-019]]
+*API-019.* Une capacité PEUT servir son {abbr-api} sous un chemin de base que fixe un déploiement, comme `/registry`.
+Les chemins des exigences API-010 et API-022 suivent alors ce chemin de base, comme `/registry/v1/assets` et `/registry/v1/openapi`.
+La description DOIT alors donner le chemin de base dans l’adresse de son serveur.
+Plusieurs capacités peuvent ainsi fonctionner dans une même application sans que deux chemins se heurtent.
+
+Un adaptateur pour une spécification externe, comme un bloc GovStack, PEUT plutôt suivre les chemins de cette spécification.
+Sa description DOIT nommer cette spécification et sa version.
+L’{abbr-api} propre à la capacité suit tout de même la présente spécification.
+
 == Historique du document
 
 [cols="1,1,4",options="header"]
 |===
 |Version |Date |Changement
 |0.1.0 |2026-11-04 |Première version.
+|0.2.0 |2026-11-07 |Nouvelle exigence API-019 : une capacité peut servir son API sous un chemin de base, et un adaptateur pour une spécification externe peut suivre les chemins de cette spécification.
 |===

@@ -6,7 +6,7 @@
 
 - [Overview](spec/en/index.adoc): scope, parts and conformance.
 - [Methods and status codes](spec/en/http.adoc): API-001 to API-009.
-- [Resources](spec/en/resources.adoc): API-010 to API-018.
+- [Resources](spec/en/resources.adoc): API-010 to API-019.
 - [Descriptions](spec/en/openapi.adoc): API-020 to API-027.
 - [Errors](spec/en/errors.adoc): API-030 to API-037.
 - [Pages, filters and sorting](spec/en/collections.adoc): API-040 to API-049.

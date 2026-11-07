@@ -6,7 +6,11 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
-## [0.1.2] - 2026-11-07
+## [0.2.0] - 2026-11-07
+
+### Added
+
+- API-019: a capability may serve its API under a base path that a deployment sets, so several capabilities can run in one application. An adapter that implements an outside specification, such as GovStack, may follow that specification's paths.
 
 ### Fixed
 

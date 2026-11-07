@@ -27,6 +27,7 @@ Path, field and event type names follow the FPSOT naming specification. Dates, m
 - An action should first become a resource; when none fits, `POST /<collection>/{<resource>Id}/<action>` may be used (API-014).
 - Bodies must be JSON objects at the top level (API-015). Names and values must follow the naming and data types specs (API-016).
 - Items must carry `id`, and should carry `createdAt` and `updatedAt` (API-017). Responses should omit empty fields; clients must treat absent and `null` alike (API-018).
+- A capability may serve its API under a deployment base path (`/registry/v1/...`, `/registry/v1/openapi`), given in the description's server URL; an adapter for an outside specification such as GovStack may follow that specification's paths and must name it (API-019).
 
 ## Descriptions
 
