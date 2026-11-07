@@ -8,10 +8,11 @@ The description is the contract between the server and its clients.
 *API-020.* Every {abbr-api} MUST have a description in the OpenAPI Specification, version 3.2 or 3.1.
 A new description SHOULD use link:https://spec.openapis.org/oas/v3.2.1.html[OpenAPI 3.2.1] or a later 3.2 patch release.
 A description MAY use link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI 3.1.2] or a later 3.1 patch release.
-Common generators, such as the one in Quarkus, still write version 3.1.
 The description MUST cover each operation that the {abbr-api} offers, with its parameters, headers, request body and responses.
 OpenAPI is the shared format of {abbr-api} tools.
 With one complete description, anyone can generate a client, a test or a documentation page.
+
+Common generators, such as the one in Quarkus, still write version 3.1.
 
 [[API-021]]
 *API-021.* A domain specification MUST publish the description of each {abbr-api} it defines, with its normative text.
