@@ -6,6 +6,19 @@ and versions follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-07
+
+### Added
+
+- API-019: a capability may serve its API under a base path that a deployment sets, so several capabilities can run in one application. An adapter that implements an outside specification, such as GovStack, may follow that specification's paths.
+- API-020: a new description should use OpenAPI 3.2 (3.2.1 or later). OpenAPI 3.1 stays allowed while common generators, such as Quarkus's, still write it.
+
+### Fixed
+
+- API-090 now links "OAuth 2.0 bearer tokens" to RFC 6750, and RFC 6750 joins the references. The skill names RFC 6750 too.
+- The French security page links the French page of the federal configuration requirements for web sites, with an archived copy.
+- Each RFC archived copy is now a snapshot of the `/info/` page that the text links, instead of the `/rfc/` page.
+
 ## [0.1.1] - 2026-11-04
 
 ### Changed

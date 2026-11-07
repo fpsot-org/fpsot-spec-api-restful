@@ -5,10 +5,14 @@ Every {abbr-api-first} has a description that people and tools read.
 The description is the contract between the server and its clients.
 
 [[API-020]]
-*API-020.* Every {abbr-api} MUST have a description in the link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI Specification], version 3.1.2 or a later 3.1 patch release.
+*API-020.* Every {abbr-api} MUST have a description in the OpenAPI Specification, version 3.2 or 3.1.
+A new description SHOULD use link:https://spec.openapis.org/oas/v3.2.1.html[OpenAPI 3.2.1] or a later 3.2 patch release.
+A description MAY use link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI 3.1.2] or a later 3.1 patch release.
 The description MUST cover each operation that the {abbr-api} offers, with its parameters, headers, request body and responses.
 OpenAPI is the shared format of {abbr-api} tools.
 With one complete description, anyone can generate a client, a test or a documentation page.
+
+Common generators, such as the one in Quarkus, still write version 3.1.
 
 [[API-021]]
 *API-021.* A domain specification MUST publish the description of each {abbr-api} it defines, with its normative text.
@@ -22,7 +26,7 @@ Buyers and other teams build against the published contract, not against one ser
 A client and a gateway can then find the description without asking anyone.
 
 [[API-023]]
-*API-023.* Schemas MUST use link:https://json-schema.org/draft/2020-12[JSON Schema draft 2020-12], the default dialect of OpenAPI 3.1.
+*API-023.* Schemas MUST use link:https://json-schema.org/draft/2020-12[JSON Schema draft 2020-12], the default dialect of OpenAPI 3.1 and 3.2.
 They MUST NOT use the `nullable` keyword of OpenAPI 3.0.
 A schema in a standard dialect works with any {abbr-json} Schema validator, inside or outside OpenAPI.
 
@@ -52,6 +56,7 @@ The linter catches a missing field or a broken reference before a client finds i
 
 === Normative
 
+* link:https://spec.openapis.org/oas/v3.2.1.html[OpenAPI Specification], OpenAPI Initiative, 3.2.1, 2026-09-10. link:https://web.archive.org/web/20261012090811/https://spec.openapis.org/oas/v3.2.1.html[Archived copy]
 * link:https://spec.openapis.org/oas/v3.1.2.html[OpenAPI Specification], OpenAPI Initiative, 3.1.2, 2025-09-19. link:https://web.archive.org/web/20261005021354/https://spec.openapis.org/oas/v3.1.2.html[Archived copy]
 * link:https://json-schema.org/draft/2020-12[JSON Schema], JSON Schema, 2020-12, 2022-06-16. link:https://web.archive.org/web/20261011162224/https://json-schema.org/draft/2020-12[Archived copy]
 
@@ -62,4 +67,5 @@ The linter catches a missing field or a broken reference before a client finds i
 |Version |Date |Change
 |0.1.0 |2026-11-04 |First version.
 |0.1.1 |2026-11-04 |Linked outside standards and added references.
+|0.2.0 |2026-11-07 |API-020: a new description should use OpenAPI 3.2; version 3.1 stays allowed while common generators still write it.
 |===

@@ -27,10 +27,11 @@ Path, field and event type names follow the FPSOT naming specification. Dates, m
 - An action should first become a resource; when none fits, `POST /<collection>/{<resource>Id}/<action>` may be used (API-014).
 - Bodies must be JSON objects at the top level (API-015). Names and values must follow the naming and data types specs (API-016).
 - Items must carry `id`, and should carry `createdAt` and `updatedAt` (API-017). Responses should omit empty fields; clients must treat absent and `null` alike (API-018).
+- A capability may serve its API under a deployment base path (`/registry/v1/...`, `/registry/v1/openapi`), given in the description's server URL; an adapter for an outside specification such as GovStack may follow that specification's paths and must name it (API-019).
 
 ## Descriptions
 
-- Every API must have a complete OpenAPI 3.1 description, 3.1.2 or a later 3.1 patch (API-020).
+- Every API must have a complete OpenAPI description; new ones should use 3.2 (3.2.1 or later), and 3.1 (3.1.2 or later) stays allowed (API-020).
 - The domain spec must publish it, and it is normative. Servers must conform to it, and CI should test that (API-021).
 - A running server must serve it at `/v<major>/openapi` as JSON (API-022). Schemas must use JSON Schema 2020-12, without `nullable` (API-023).
 - Each operation must have a unique `operationId` in field-name form, a summary and a description (API-024).
@@ -89,7 +90,7 @@ Path, field and event type names follow the FPSOT naming specification. Dates, m
 - Every response must send `nosniff`; non-public data must send `no-store`; other responses should send an explicit `Cache-Control` (API-082). Servers must not send software or version headers (API-083).
 - CORS headers must be sent only when needed, with a fixed origin list, never echoing `Origin`, never `*` with credentials. Open data without credentials may allow `*` (API-084).
 - URLs must not carry secrets, tokens or personal data (API-085). Servers must validate input, limit body size with `413`, and ignore or refuse read-only fields (API-086).
-- An API that must know its caller must accept OAuth 2.0 bearer tokens per RFC 9700, and should use OpenID Connect for people. It must check issuer, audience, expiry and signature (API-090).
+- An API that must know its caller must accept OAuth 2.0 bearer tokens (RFC 6750) per RFC 9700, and should use OpenID Connect for people. It must check issuer, audience, expiry and signature (API-090).
 - Servers must not accept credentials in query parameters, and an API key alone must not open non-public data (API-091).
 - Servers must check access to every item and every field (API-092). They should answer `404` rather than `403` when existence is private (API-093).
 - Every API must limit request rates, with `429` and `Retry-After`, and the description must state the limits (API-094).
